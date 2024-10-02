@@ -87,3 +87,39 @@ so that
     \pdfrac{\norm{\beeta}}{\gamma}=\bn:\pdfrac{\bzeta}{\gamma}-2G-\pdfrac{}{\gamma}\left(\sqrt{\dfrac{2}{3}}b\dfrac{\gamma{}a^y}{1+\gamma{}b}+\sqrt{\dfrac{2}{3}}c_ez_e\left(1-z\right)\dfrac{\gamma{}\sigma^y}{1+\gamma{}c_e}\right),\\
     \pdfrac{\norm{\beeta}}{z}=\bn:\pdfrac{\bzeta}{z}+\sqrt{\dfrac{2}{3}}c_ez_e\dfrac{\gamma{}\sigma^y}{1+\gamma{}c_e}.
 \end{gather}
+
+\subsection{Consistent Tangent Operator}
+It is possible to differentiate the local equilibrium $\mb{R}=\mb{0}$ to obtain
+\begin{gather}
+    \pdfrac{\mb{R}}{\bvarepsilon}+\pdfrac{\mb{R}}{\mb{x}}\ddfrac{\mb{x}}{\bvarepsilon}=\mb{0}.
+\end{gather}
+This gives
+\begin{gather}\label{eq:local_equilibrium}
+    \ddfrac{\mb{x}}{\bvarepsilon}=-\left(\pdfrac{\mb{R}}{\mb{x}}\right)^{-1}\pdfrac{\mb{R}}{\bvarepsilon}=-\mb{J}^{-1}\pdfrac{\mb{R}}{\bvarepsilon}.
+\end{gather}
+Noting that
+\begin{gather}
+    \pdfrac{\norm{\beeta}}{\bvarepsilon}=\bn:\pdfrac{\bzeta}{\bvarepsilon}=\bn:\pdfrac{\bs^\text{trial}}{\bvarepsilon}=2G\bn:\mathbb{I}_\text{dev}=2G\bn,
+\end{gather}
+then in the matrix form,
+\begin{gather}
+    \pdfrac{\mb{R}}{\bvarepsilon}=2G\begin{bmatrix}
+        \bn^\mT \\\mb{0}
+    \end{bmatrix}.
+\end{gather}
+By solving \eqsref{eq:local_equilibrium}, one could obtain $\ddfrac{\mb{x}}{\bvarepsilon}$, we are interested in the first row, which can be explicitly written as
+\begin{gather}
+    \ddfrac{\gamma}{\bvarepsilon}=-2G\dfrac{1-\sqrt{\dfrac{2}{3}}\gamma{}\ddfrac{U}{z}}{\det\mb{J}}\bn^\mT.
+\end{gather}
+Now from the stress update expression, it is possible to derive the consistent tangent operator as
+\begin{gather}
+    \ddfrac{\bsigma}{\bvarepsilon}=\mb{D}-2G\left(\pdfrac{\bn}{\bvarepsilon}\gamma+\bn\ddfrac{\gamma}{\bvarepsilon}\right).
+\end{gather}
+In the meantime, by $\bn=\dfrac{\bzeta}{\norm{\bzeta}}$, the derivative of $\bn$ with respect to $\bvarepsilon$ can be shown as
+\begin{gather}
+    \pdfrac{\bn}{\bvarepsilon}=\dfrac{2G}{\norm{\bzeta}}\left(\mathbb{I}_\text{dev}-\bn\bn^\mT\right),
+\end{gather}
+after some algebra, the consistent tangent operator can be written as
+\begin{gather}
+    \ddfrac{\bsigma}{\bvarepsilon}=\mb{D}-\dfrac{4G^2\gamma}{\norm{\bzeta}}\mathbb{I}_\text{dev}+4G^2\left(\dfrac{\gamma}{\norm{\bzeta}}+\dfrac{1-\sqrt{\dfrac{2}{3}}\gamma{}\ddfrac{U}{z}}{\det\mb{J}}\right)\bn\bn^\mT.
+\end{gather}
