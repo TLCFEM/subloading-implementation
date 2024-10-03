@@ -1,21 +1,21 @@
 \section{Subloading Surface Model}
 In this section, the framework of the (extended) subloading surface model is briefly reviewed and summarised.
 \subsection{The Subloading Surface}
-The conventional plasticity models often adopt the concept of the yield surface, denoted by $f\left(\bsigma,\cdots\right)$, which defines the frontier of plasticity.
+The conventional plasticity models often adopt the concept of the yield surface, denoted by $f\left(\bsigma,\cdots\right)$, which defines the frontier/boundary of plasticity.
 For example,
 \begin{gather}
     f=\norm{\beeta}-F,
 \end{gather}
-in which $\beeta$ is known as the shifted stress, $F$ characterises the size of the surface and could evolve with the development of plasticity.
+in which $\beeta$ is known as the shifted stress, $F=F\left(q\right)$ characterises the size of the surface and could evolve with the development of plasticity driven by some internal variable $q$.
 Within the yield surface, the material is elastic, while plasticity would develop once the stress state reaches the yield surface.
-Thus any admissible state shall satisfy the inequality $f\leqslant0$.
+Thus, any admissible state shall satisfy the inequality $f\leqslant0$.
 
 The original proposal of the subloading surface model introduces the concept of the normal yield ratio, denoted by $z$ in this work, which effectively scales the yield surface $f$ down by a factor of $z$, the new surface is call the subloading surface $f_s$ and it is concentric with the yield surface $f$.
 \begin{gather}
     f_s=\norm{\beeta}-zF.
 \end{gather}
 The normal yield ratio $0\leqslant{}z\leqslant{}1$ shall be updated in a manner such that $f_s=0$ is enforced not only for plastic loading but also for elastic unloading.
-With such a construct, any given stress state would always lie on the subloading surface.
+With such a construct, any given stress state would always lie on the subloading surface, meaning that $f_s=0$ is always satisfied.
 
 The main shortcoming of the original subloading surface model is that it exhibits excessive strain accumulation under cyclic loading.
 To address this issue, the extended subloading surface model introduces the concept of the elastic core.
@@ -138,42 +138,41 @@ The corresponding ODE can be derived as follows,
 \begin{gather}\label{eq:strict_bound}
     y'=fb\exp\left(-bx\right)+f'\left(1-\exp\left(-bx\right)\right)=b\left(f-y\right)+\dfrac{f'}{f}y.
 \end{gather}
-After careful comparison, one could observe that \eqsref{eq:strict_bound} is in fact identical to the evolution rule presented in \eqsref{eq:original_core}.
+After careful comparison, one could observe that \eqsref{eq:strict_bound} is in fact the scalar version of the evolution rule presented in \eqsref{eq:original_core}.
+They bear the same format.
 \subsubsection{Revised Evolution Rule (Elastic Core)}
 Based on the above observations, instead of defining an evolution rule for $\bc$ as shown in \eqsref{eq:original_core}, which turns out to be cumbersome when it comes to numerical implementation, one can apply the following decomposition,
 \begin{gather}\label{eq:decomposition_core}
     \bc-\bbeta=F\bd,
 \end{gather}
-then the evolution of $\bc$ can be equivalently described by the evolution of $\bd$, which takes a very simple form,
-\begin{gather}
+then the evolution of $\bc$ can be equivalently described by the evolution of $\bd$, which could take a very simple form,
+\begin{gather}\label{eq:revised_core}
     \dot{\bd}=c_e\left(z_e\bn-\bd\right)\gamma.
 \end{gather}
-Since $\bd$ defined in this manner is bounded by $z_e$, it is then guaranteed that $\bc-\bbeta\leqslant{}z_eF$.
+Since the magnitude of $\bd$ defined in this manner is bounded by the constant $z_e$, it is then guaranteed that $\norm{\bc-\bbeta}=z_e\norm{\bd}\leqslant{}z_eF$.
 Such a decomposition separates the directional vector from the scalar magnitude, which allows much simpler evolution rules for both parts, although the vector here does not possess a fixed unit length.
 \eqsref{eq:decomposition_core} may be called the `pseudo-polar coordinate' representation.
 \subsubsection{Revised Evolution Rule (Back Stress)}
-Now since \eqsref{eq:decomposition_core} is adopted, it can also be applied to $\bbeta$ to allow its bound to evolve with the development of plasticity.
+Now since \eqsref{eq:decomposition_core} is adopted, it can also be applied to $\bbeta$ to allow its bound to evolve with the development of plasticity, that is,
 \begin{gather}\label{eq:decomposition_back}
-    \bbeta=a^y\balpha,
+    \bbeta=H\balpha,
 \end{gather}
-with $a^y=a^y\left(q\right)$ being the bound and $\balpha$ being the normalised back stress which shall have the following evolution rule.
-\begin{gather}
+with $H=H\left(q\right)$ being the bound and $\balpha$ being the normalised back stress (normalised by $H$) which shall have the following evolution rule.
+\begin{gather}\label{eq:revised_back}
     \dot{\balpha}=b\left(\bn-\balpha\right)\gamma,
 \end{gather}
 where $b$ is a constant that controls the evolution rate.
-\subsubsection{Remarks}
-We shall summarise the changes made to the original formulation before presenting a reference implementation.
-\subsection{A von Mises Material Model}
-Within the von Mises framework, the shifted stress shall be computed as
+Similar to $\norm{\bc-\bbeta}$, here it is guaranteed that $\norm{\bbeta}\leqslant{}H$.
+\subsubsection{Shifted Stress}
+The original formulation uses the following expression to compute the shifted stress $\beeta$,
 \begin{gather}
-    \beeta=\dev{\bsigma}-\left(\bbeta+\left(1-z\right)\left(\bc-\bbeta\right)\right),
+    \beeta=\bs-\left(\bbeta+\left(1-z\right)\left(\bc-\bbeta\right)\right),
 \end{gather}
-since now the new centre of the subloading surface is $\bbeta+\left(1-z\right)\left(\bc-\bbeta\right)$.
-Account for \eqsref{eq:decomposition_core} and \eqsref{eq:decomposition_back}, the above expression can be rewritten as
+where $\bs=\bs\left(\bsigma\right)$ is some function of the stress tensor, since now the new centre of the subloading surface is shifted to $\bbeta+\left(1-z\right)\left(\bc-\bbeta\right)$.
+Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsref{eq:decomposition_back}, the above expression can be rewritten as
 \begin{gather}
-    \beeta=\dev{\bsigma}-a^y\balpha+\left(z-1\right)\sigma^y\bd,
+    \beeta=\bs-H\balpha+\left(z-1\right)F\bd,
 \end{gather}
-where $\sigma^y=\sigma^y\left(q\right)$ denotes the yield stress that evolves with the accumulated plastic strain $q$.
 \figref{fig:revised_surfaces} presents a graphical representation of the quantities used in the revised formulation.
 \begin{figure}[htb]
     \centering\footnotesize
@@ -188,25 +187,32 @@ where $\sigma^y=\sigma^y\left(q\right)$ denotes the yield stress that evolves wi
         \coordinate(A)at(\Ax,\Ay);
         \coordinate(B)at(\Bx,\By);
         \coordinate(C)at($(A)!0.375!(B)$);
+        \coordinate(D)at($(C)+(120:2.5)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(D){};
         \draw[dashed,draw,line width=.3mm](A)circle(4cm);
         \draw[draw,line width=.6mm](C)circle(2.5cm);
-        \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$a^y\balpha$};
+        \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta=H\balpha$};
         \draw[->,dotted,red,line width=.4mm](C)--(B);
         \draw[->,red,line width=1mm](A)--(C);
-        \draw[->,red,line width=1mm](C)--++(120:2.5)node[midway,fill=white]{$\beeta$};
-        \draw[->,red,line width=1mm](0,0)--($(C)+(120:2.5)$)node[midway,fill=white,sloped]{$\bs=\dev{\bsigma}$};
-        \draw[|<->|](C)--++(35:2.5)node[midway,fill=white,sloped]{$zF$};
+        \draw[->,red,line width=1mm](C)--(D)node[midway,fill=white]{$\beeta$};
+        \draw[->,red,line width=1mm](0,0)--(D)node[midway,fill=white,sloped]{$\bs$};
+        \draw[|<->|](C)--++(45:2.5)node[midway,fill=white,sloped]{$zF$};
         \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
         \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white]{subloading surface};
-        \draw[<-]($(C)!0.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$z\sigma^y\bd$};
-        \draw[<-]($(A)!0.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)\sigma^y\bd$};
+        \draw[<-]($(C)!0.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$zF\bd$};
+        \draw[<-]($(A)!0.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)F\bd$};
     \end{tikzpicture}
     \caption{graphical representation of the surfaces using proposed definitions}\label{fig:revised_surfaces}
 \end{figure}
+\subsection{A von Mises Material Model}
 \subsubsection{Subloading Surface}
+For the von Mises criterion, $\bs$ shall take the form $\bs=\dev{\bsigma}$, then
+\begin{gather}
+    \beeta=\dev{\bsigma}-H\balpha+\left(z-1\right)F\bd.
+\end{gather}
 The subloading surface shall be expressed as follows by replacing $F$ with $\sqrt{\dfrac{2}{3}}\sigma^y$.
 \begin{gather}
     f_s=\norm{\beeta}-z\sqrt{\dfrac{2}{3}}\sigma^y.
@@ -230,20 +236,23 @@ The evolution of $\sigma^y$ depends on $q$, here we adopt general form that comb
     \end{gather}
     where $\sigma^i$ is the initial yield stress, $k_\text{iso}$ is the isotropic hardening modulus, $\sigma^s_\text{iso}$ is the saturation stress, and $m^s_\text{iso}$ is the saturation rate.
     \paragraph{Kinematic Hardening}
-    The kinematic hardening bound $a^y$ takes a similar form,
+    The kinematic hardening bound $H$ is replaced with a discrete function $a^y$ that takes a similar form to $\sigma^y$,
     \begin{gather}
         a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right),
     \end{gather}
     where $a^i$ is the initial stress, $k_\text{kin}$ is the kinematic hardening modulus, $a^s_\text{kin}$ is the saturation stress, and $m^s_\text{kin}$ is the saturation rate.
     
-    The normalised back stress $\balpha$ adopts an Armstrong--Frederick type evolution rule,
+    The normalised back stress $\balpha$ adopts an Armstrong--Frederick type evolution rule as shown in \eqsref{eq:revised_back}.
     \begin{gather}
         \dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma.
     \end{gather}
     \paragraph{Elastic Core}
+    The new field $\bd$ also adopts an Armstrong--Frederick type evolution rule as shown in \eqsref{eq:revised_core}.
     \begin{gather}
     \dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma.
 \end{gather}
+\subsubsection{Summary}
+The key expressions are summarised as follows.
 \subsection{Numerical Implementation}
 \subsubsection{Some Simplifications}
 Noting that $\dot{\balpha}$ is a linear function of $\balpha$, taking advantage of the implicit Euler method, one could express $\balpha$ in its explicit form.
@@ -346,7 +355,7 @@ By solving \eqsref{eq:local_equilibrium}, one could obtain $\ddfrac{\mb{x}}{\bva
 \begin{gather}
     \ddfrac{\gamma}{\bvarepsilon}=-2G\dfrac{1-\sqrt{\dfrac{2}{3}}\gamma{}\ddfrac{U}{z}}{\det\mb{J}}\bn^\mT.
 \end{gather}
-Now from the stress update expression, it is possible to derive the consistent tangent operator as
+Now from the stress update expression $\bsigma=\bsigma^\text{trial}-\gamma2G\bn$, it is possible to derive the consistent tangent operator as
 \begin{gather}
     \ddfrac{\bsigma}{\bvarepsilon}=\mb{D}-2G\left(\pdfrac{\bn}{\bvarepsilon}\gamma+\bn\ddfrac{\gamma}{\bvarepsilon}\right).
 \end{gather}
@@ -479,6 +488,6 @@ It can be validated that the power function
 \end{gather}
 satisfies the weak condition.
 It is analytically continuous for all valid $n$.
-For $n=1$, it also satisfies the strong condition.
-For $n>1$, it is numerically unstable thus shall not be considered.
+For $n\geqslant1$, it also satisfies the strong condition.
+However, when $n>1$, it is numerically unstable thus shall not be considered.
 For $n<1$, it shows a similar behaviour to the logarithmic function, that is, does not present the ideal numerical continuity but is more numerically stable.
