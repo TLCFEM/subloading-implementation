@@ -30,4 +30,4 @@ __pycache__
 *.toc
 PIC/*
 SUBLOADING.pdf
-venv
+*venv

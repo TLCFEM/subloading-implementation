@@ -41,12 +41,12 @@ The subloading surface is then pulled from the original centre $\bbeta$ towards 
         \draw[dashed,draw,line width=.3mm](A)circle(4cm);
         \draw[dotted,draw,line width=.3mm](A)circle(2.5cm);
         \draw[draw,line width=.6mm](C)circle(2.5cm);
-        \draw[->,red,line width=.4mm](0,0)--(A)node[midway,fill=white]{$\bbeta$};
+        \draw[->,red,line width=.4mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta$};
         \draw[->,red,line width=.6mm](A)--(B);
-        \draw[->,red,line width=.4mm](0,0)--(B)node[midway,fill=white]{$\bc$};
+        \draw[->,red,line width=.4mm](0,0)--(B)node[midway,fill=white,sloped]{$\bc$};
         \draw[->,blue,line width=.8mm](A)--(C);
-        \draw[|<->|](A)--++(140:4)node[midway,fill=white]{$F$};
-        \draw[|<->|](C)--++(140:2.5)node[midway,fill=white]{$zF$};
+        \draw[|<->|](A)--++(140:4)node[midway,fill=white,sloped]{$F$};
+        \draw[|<->|](C)--++(140:2.5)node[midway,fill=white,sloped]{$zF$};
         \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
         \draw[<-]($(A)+(60:2.5)$)--++(60:1)--++(2,0)node[right,fill=white,align=left]{subloading surface\\in the original proposal};
         \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white,align=left]{subloading surface\\in the extended version};
@@ -68,7 +68,7 @@ This is achieved by the following evolution rule for $\bc$,
 In which, $0\leqslant{}c_e$ is a constant that controls the evolution rate, $0\leqslant{}z_e\leqslant1$ is a constant that controls the limit size of the elastic core, $\gamma$ is the plastic multiplier and $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}$ is unit gradient of the subloading surface.
 
 The evolution rule for the normal yield ratio $z$ is given by
-\begin{gather}
+\begin{gather}\label{eq:original_z}
     \dot{z}=U\dot{q},
 \end{gather}
 where $U=U\left(z\right)$ is a function that shall satisfy certain conditions, and $q$ is the accumulated plastic strain.
@@ -92,9 +92,9 @@ However, as noted in the literature, the corresponding solution is not strictly 
 \figref{fig:examples} presents both hardening and softening examples.
 \begin{figure}[htb]
     \centering\scriptsize
-    \begin{subfigure}{0.48\textwidth}\centering
+    \begin{subfigure}{0.45\textwidth}\centering
         \begin{tikzpicture}
-            \begin{axis}[axis lines=middle,xlabel=$x$,ylabel=$y$,grid=both,width=8cm,height=6cm,legend pos=south east,ymin=0,ymax=1.5]
+            \begin{axis}[axis lines=middle,xlabel=$x$,ylabel=$y$,grid=both,width=6.5cm,height=4.5cm,legend pos=south east,ymin=0,ymax=1.5,scale only axis,enlargelimits=false]
                 \pgfmathsetmacro{\aa}{-.05}
                 \pgfmathsetmacro{\bb}{1}
                 \pgfmathsetmacro{\cc}{1}
@@ -106,9 +106,9 @@ However, as noted in the literature, the corresponding solution is not strictly 
         \end{tikzpicture}
         \caption{softening}
     \end{subfigure}\hfill
-    \begin{subfigure}{0.48\textwidth}\centering
+    \begin{subfigure}{0.45\textwidth}\centering
         \begin{tikzpicture}
-            \begin{axis}[axis lines=middle,xlabel=$x$,ylabel=$y$,grid=both,width=8cm,height=6cm,legend pos=south east,ymin=0,ymax=1.5]
+            \begin{axis}[axis lines=middle,xlabel=$x$,ylabel=$y$,grid=both,width=6.5cm,height=4.5cm,legend pos=south east,ymin=0,ymax=1.5,scale only axis,enlargelimits=false]
                 \pgfmathsetmacro{\aa}{0.05}
                 \pgfmathsetmacro{\bb}{1}
                 \pgfmathsetmacro{\cc}{1}
@@ -126,7 +126,7 @@ As can be seen from the figure, the solution may overshoot for softening bounds.
 Furthermore, in both cases, the solution $y$ does \textbf{not} asymptotically approach the bound $f(x)$.
 That is, the following condition does not hold for arbitrarily small $\epsilon$,
 \begin{gather}
-    \lim_{x\to\infty}\abs{y-f(x)}<\epsilon.
+    \lim\limits_{x\to\infty}\abs{y-f(x)}<\epsilon.
 \end{gather}
 
 To ensure that the solution is bounded by $f(x)$, let's consider the following function,
@@ -174,6 +174,38 @@ Account for \eqsref{eq:decomposition_core} and \eqsref{eq:decomposition_back}, t
     \beeta=\dev{\bsigma}-a^y\balpha+\left(z-1\right)\sigma^y\bd,
 \end{gather}
 where $\sigma^y=\sigma^y\left(q\right)$ denotes the yield stress that evolves with the accumulated plastic strain $q$.
+\figref{fig:revised_surfaces} presents a graphical representation of the quantities used in the revised formulation.
+\begin{figure}[htb]
+    \centering\footnotesize
+    \begin{tikzpicture}[>=latex]
+        \newcommand{\Ax}{2.8}
+        \newcommand{\Ay}{3}
+        \newcommand{\Bx}{6}
+        \newcommand{\By}{3.8}
+        \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
+        \draw[->](-.5,0)--(3,0);
+        \draw[->](0,-.5)--(0,3);
+        \coordinate(A)at(\Ax,\Ay);
+        \coordinate(B)at(\Bx,\By);
+        \coordinate(C)at($(A)!0.375!(B)$);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
+        \draw[dashed,draw,line width=.3mm](A)circle(4cm);
+        \draw[draw,line width=.6mm](C)circle(2.5cm);
+        \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$a^y\balpha$};
+        \draw[->,dotted,red,line width=.4mm](C)--(B);
+        \draw[->,red,line width=1mm](A)--(C);
+        \draw[->,red,line width=1mm](C)--++(120:2.5)node[midway,fill=white]{$\beeta$};
+        \draw[->,red,line width=1mm](0,0)--($(C)+(120:2.5)$)node[midway,fill=white,sloped]{$\bs=\dev{\bsigma}$};
+        \draw[|<->|](C)--++(35:2.5)node[midway,fill=white,sloped]{$zF$};
+        \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
+        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white]{subloading surface};
+        \draw[<-]($(C)!0.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$z\sigma^y\bd$};
+        \draw[<-]($(A)!0.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)\sigma^y\bd$};
+    \end{tikzpicture}
+    \caption{graphical representation of the surfaces using proposed definitions}\label{fig:revised_surfaces}
+\end{figure}
 \subsubsection{Subloading Surface}
 The subloading surface shall be expressed as follows by replacing $F$ with $\sqrt{\dfrac{2}{3}}\sigma^y$.
 \begin{gather}
@@ -329,3 +361,124 @@ after some algebra, the consistent tangent operator can be written as
 \subsubsection{Remarks}
 Compared to the previous implementation, the formulation proposed in this work dramatically reduces the size of local system from \num{20} to \num{2}.
 We also present the explicit expression of the consistent tangent operator.
+If \eqsref{eq:original_z} can be explicitly integrated by choosing a specific function $U$ (such as the cotangent function used in the original proposal), the local system can be further reduced to a scalar residual.
+\subsection{Choice of $U$}
+It is clear that by construct, the subloading surface model ensures that the tangent stiffness satisfies the smoothness condition, that is, it is continuous. The corresponding potential function shall possess at least $C^2$ continuity.
+We are interested in whether such a continuous condition is achievable numerically.
+Furthermore, if it indeed can be achieved, is such a continuous condition really beneficial in terms of numerical performance.
+Here we discuss these problems by exploring the explicit expression for the tangent stiffness.
+
+For brevity, assuming no hardening and no elastic core, and $U\left(z\right)$ takes a general form, then the Jacobian could be simplified to
+\begin{gather}
+    \mb{J}=\begin{bmatrix}
+        -E & -\sigma^y    \\[2mm]
+        -U & 1-\gamma{}U'
+    \end{bmatrix}.
+\end{gather}
+The tangent stiffness shall be then expressed as
+\begin{gather}
+    \ddfrac{\sigma}{\varepsilon}=E-\dfrac{E^2}{E\left(1-\gamma{}U'\right)+U\sigma^y}\left(1-\gamma{}U'\right)=E-\dfrac{E}{1+\dfrac{U\sigma^y}{E\left(1-\gamma{}U'\right)}}.
+\end{gather}
+Given that we are interested in the very first step from $z_n=0$ to some non-zero value, then
+\begin{gather}
+    \gamma=\dfrac{z-z_n}{U}=\dfrac{z-0}{U}=\dfrac{z}{U},
+\end{gather}
+also since $\sigma^y/E$ is a constant, we shall focus on the following limit,
+\begin{gather}\label{eq:weak_limit}
+    \lim\limits_{z\to0^+}\dfrac{U}{1-\gamma{}U'}=\lim\limits_{z\to0^+}\dfrac{U}{1-z\dfrac{U'}{U}}=\lim\limits_{z\to0^+}\dfrac{U^2}{U-zU'}.
+\end{gather}
+If it converges to infinity, then the tangent stiffness is continuous around $z=0$.
+\subsubsection{A `Not-So-Ideal' Choice}
+Now if one chooses $U\left(z\right)=-u\ln\left(z\right)$ so that $U'\left(z\right)=-u/z$, then
+\begin{gather}
+    \lim\limits_{z\to0^+}\dfrac{U^2}{U-zU'}=\lim\limits_{z\to0^+}\dfrac{u^2\ln^2\left(z\right)}{-u\ln\left(z\right)+u}=\lim\limits_{z\to0^+}\dfrac{2u\ln\left(z\right)/z}{-1/z}=\lim\limits_{z\to0^+}-u\ln\left(z\right)=\infty.
+\end{gather}
+Thus,
+\begin{gather}
+    \lim\limits_{z\to0^+}\ddfrac{\sigma}{\varepsilon}=E.
+\end{gather}
+This proves that the tangent stiffness is continuous at $z=0$.
+
+However, noting that $\dfrac{U^2}{U-zU'}=-u\ln\left(z\right)$ quickly departs away from infinity, this continuity cannot be achieved numerically.
+For example, on platforms with the double precision (64-bit), the interval machine epsilon is $2^{-52}$, thus, $-\ln\left(2^{-52}\right)\approx\num{36}$.
+\subsubsection{A `Better' Choice}
+One can also choose the cotangent function $U\left(z\right)=u\cot\left(\dfrac{\pi}{2}z\right)$ so that $U'\left(z\right)=-\dfrac{u\pi}{2}\csc^2\left(\dfrac{\pi}{2}z\right)$, then
+\begin{gather}
+    \lim\limits_{z\to0^+}\dfrac{U^2}{U-zU'}=\lim\limits_{z\to0^+}u\dfrac{\cos\left(\pi{}z\right)+1}{\sin\left(\pi{}z\right)+\pi{}z}=\infty.
+\end{gather}
+For $z\approx\num{e-16}$, it reaches $\approx\num{e16}$.
+This effectively results in a continuous tangent stiffness around $z=0$.
+Hence the cotangent function presents a `nicer' behaviour as it is more aligned with the intended continuity requirement.
+
+Based on the above discussion, to ensure numerical continuity, it is necessary to further impose the following condition,
+\begin{gather}\label{eq:continuity}
+    \lim\limits_{z\to0^+}\dfrac{zU^2}{U-zU'}\neq0.
+\end{gather}
+We call \eqsref{eq:weak_limit} the `weak numerical continuity condition' and \eqsref{eq:continuity} the `strong numerical continuity condition'.
+It can be validated that the cotangent function satisfies this condition.
+Noting that \eqsref{eq:continuity} is obtained from a discretised system with $z$ being integrated by the implicit Euler method, for other methods, such as the trapezoidal rule, the specific form of this condition may vary.
+\subsubsection{Is `Good' Really Good?}
+Functions that meet the strong numerical continuity condition are not necessarily the best choice.
+It is typically expected that it shall be `easier' to solve the system with a smaller step size.
+However, this is not the case with functions that satisfy \eqsref{eq:continuity}.
+Loading from $z_n=0$ to some non-zero value would be more difficult, if not impossible, with a smaller step size as the Jacobian quickly becomes ill-conditioned.
+
+To illustrate, we consider the reciprocal condition number of the following Jacobian,
+\begin{gather}
+    \mb{J}=\begin{bmatrix}
+        1 & 1                \\[2mm]
+        U & z\dfrac{U'}{U}-1
+    \end{bmatrix}.
+\end{gather}
+It can be seen from \figref{fig:rcond} that with a smaller $z$ ($\Delta{}z$), functions such as $1/z$ and $\cot\left(z\right)$ result in an ill-conditioned system that is numerically difficult to solve.
+This often causes the local divergence.
+\begin{figure}
+    \centering\footnotesize
+    \begin{tikzpicture}
+        \begin{axis}[
+                xlabel={$z$},
+                ylabel={$\text{rcond}\left(\mb{J}\right)$},
+                legend pos=south east,
+                grid=major,
+                width=7cm,
+                height=4.5cm,
+                xmode=log,
+                ymode=log,
+                xmin=1e-16,
+                xmax=1e-1,
+                scale only axis,
+                enlargelimits=false,
+            ]
+            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/pow3.txt};
+            \addlegendentry{$z^{-0.2}$}
+            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/pow.txt};
+            \addlegendentry{$z^{-0.5}$}
+            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/pow2.txt};
+            \addlegendentry{$z^{-1}$}
+            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/log.txt};
+            \addlegendentry{$-\ln\left(z\right)$}
+            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/cot.txt};
+            \addlegendentry{$\cot\left(z\right)$}
+        \end{axis}
+    \end{tikzpicture}
+    \caption{reciprocal condition number of the Jacobian}\label{fig:rcond}
+\end{figure}
+When such a divergence occurs, sub-stepping would only make the system even more different to solve.
+This means, with functions that satisfy the strong numerical continuity condition, there exists a lower bound for the step size.
+
+Now, we shall ask the following question: what kind of functions shall be used?
+From the perspective of numerical stability, it appears to be better to choose functions that satisfy the weak numerical continuity condition only.
+That is,
+\begin{gather}
+    \lim\limits_{z\to0^+}\dfrac{U^2}{U-zU'}=\infty\qquad\text{and}\qquad\lim\limits_{z\to0^+}\dfrac{zU^2}{U-zU'}=0.
+\end{gather}
+
+It can be validated that the power function
+\begin{gather}
+    U\left(z\right)=z^{-n}-1\qquad\text{for}\qquad{}0<n
+\end{gather}
+satisfies the weak condition.
+It is analytically continuous for all valid $n$.
+For $n=1$, it also satisfies the strong condition.
+For $n>1$, it is numerically unstable thus shall not be considered.
+For $n<1$, it shows a similar behaviour to the logarithmic function, that is, does not present the ideal numerical continuity but is more numerically stable.

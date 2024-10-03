@@ -4,6 +4,7 @@
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \usepackage{lineno}
+\usepackage[many]{tcolorbox}
 %\usepackage{easyReview}
 \usetikzlibrary{shapes.geometric,backgrounds}
 \pgfplotsset{compat=1.8}
@@ -40,6 +41,7 @@
 \newcommand{\bd}{\mb{d}}
 \DeclarePairedDelimiter\abs{\lvert}{\rvert}
 \DeclarePairedDelimiter\norm{\lVert}{\rVert}
+\newtcolorbox{Objective}{colframe=black,colback=white,sharp corners}
 \makeatletter
 \let\oldabs\abs
 \def\abs{\@ifstar{\oldabs}{\oldabs*}}
