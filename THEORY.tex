@@ -226,18 +226,18 @@ where $\gamma$ denotes the plastic multiplier.
 \subsubsection{Evolution Rules}
 \paragraph{Accumulated Plastic Strain}
 The accumulated plastic strain $q$ simply takes the accumulated magnitude of $\bvarepsilon^p$, thus, its rate form is
-\begin{gather}
+\begin{gather}\label{eq:eqv_strain}
     \dot{q}=\sqrt{\dfrac{2}{3}}\norm{\dot{\bvarepsilon^p}}=\sqrt{\dfrac{2}{3}}\gamma.
 \end{gather}
 \paragraph{Isotropic Hardening}
 The evolution of $\sigma^y$ depends on $q$, here we adopt general form that combines linear hardening and nonlinear saturation.
-\begin{gather}
+\begin{gather}\label{eq:iso_bone}
     \sigma^y=\sigma^i+k_\text{iso}q+\sigma^s_\text{iso}\left(1-e^{-m^s_\text{iso}q}\right),
     \end{gather}
     where $\sigma^i$ is the initial yield stress, $k_\text{iso}$ is the isotropic hardening modulus, $\sigma^s_\text{iso}$ is the saturation stress, and $m^s_\text{iso}$ is the saturation rate.
     \paragraph{Kinematic Hardening}
     The kinematic hardening bound $H$ is replaced with a discrete function $a^y$ that takes a similar form to $\sigma^y$,
-    \begin{gather}
+    \begin{gather}\label{eq:kin_bone}
         a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right),
     \end{gather}
     where $a^i$ is the initial stress, $k_\text{kin}$ is the kinematic hardening modulus, $a^s_\text{kin}$ is the saturation stress, and $m^s_\text{kin}$ is the saturation rate.
@@ -256,7 +256,7 @@ The key expressions for both uniaxial and 3D models are summarised in \tabref{ta
 Note the constant $\sqrt{\dfrac{2}{3}}$ is added to the evolution rules for $\alpha$ and $d$ in the uniaxial version to ensure the same set of parameters used for both models would yield the same results.
 They can be removed if such a consistency is not required.
 \begin{table}[htb]
-    \centering\renewcommand{\arraystretch}{1.4}
+    \centering
     \caption{Summary of the subloading surface model}\label{tab:summary}
     \begin{tabular}{rll}
         \toprule
@@ -277,12 +277,12 @@ They can be removed if such a consistency is not required.
 \subsection{Numerical Implementation}
 \subsubsection{Some Simplifications}
 Noting that $\dot{\balpha}$ is a linear function of $\balpha$, taking advantage of the implicit Euler method, one could express $\balpha$ in its explicit form.
-\begin{gather}
+\begin{gather}\label{eq:explicit_alpha}
     \balpha_n+b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma=\balpha\qquad\rightarrow\qquad
     \balpha=\dfrac{\gamma\sqrt{\dfrac{2}{3}}b\bn+\balpha_n}{1+\gamma{}b}.
     \end{gather}
     Similarly, $\bd$ can be expressed as
-    \begin{gather}
+    \begin{gather}\label{eq:explicit_d}
         \bd_n+c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma=\bd\qquad\rightarrow\qquad\bd=\dfrac{\gamma{}\sqrt{\dfrac{2}{3}}c_ez_e\bn+\bd_n}{1+\gamma{}c_e}.
     \end{gather}
     On the other hand, the deviatoric stress $\bs$ shall be computed via the trial stress $\bsigma^\text{trial}$,
@@ -291,7 +291,7 @@ Noting that $\dot{\balpha}$ is a linear function of $\balpha$, taking advantage 
 \end{gather}
 
 The shifted stress $\beeta$ is then
-\begin{gather}
+\begin{gather}\label{eq:explicit_eta}
     \begin{split}
         \beeta & =\bs-a^y\balpha+\left(z-1\right)\sigma^y\bd                                                                                                                                                \\
                & =\bs^\text{trial}-\gamma2G\bn-a^y\dfrac{\gamma{}\sqrt{\dfrac{2}{3}}b\bn+\balpha_n}{1+\gamma{}b}+\left(z-1\right)\sigma^y\dfrac{\gamma{}\sqrt{\dfrac{2}{3}}c_ez_e\bn+\bd_n}{1+\gamma{}c_e}.
@@ -319,9 +319,9 @@ and
 \end{gather}
 Although it is not possible to simplify more, one shall realise that $\bzeta$ is a function of $\bvarepsilon$, $\gamma$ and $z$ only.
 Its derivatives can be computed as follows.
-\begin{gather}
-    \pdfrac{\bzeta}{\gamma}=-\dfrac{\ddfrac{a^y}{\gamma}\left(1+\gamma{}b\right)-ba^y}{\left(1+\gamma{}b\right)^2}\balpha_n+\left(z-1\right)\dfrac{\ddfrac{\sigma^y}{\gamma}\left(1+\gamma{}c_e\right)-c_e\sigma^y}{\left(1+\gamma{}c_e\right)^2}\bd_n,\\
-    \pdfrac{\bzeta}{z}=\dfrac{\sigma^y}{1+\gamma{}c_e}\bd_n,\\
+\begin{gather}\label{eq:zeta_d1}
+\pdfrac{\bzeta}{\gamma}=-\dfrac{\ddfrac{a^y}{\gamma}\left(1+\gamma{}b\right)-ba^y}{\left(1+\gamma{}b\right)^2}\balpha_n+\left(z-1\right)\dfrac{\ddfrac{\sigma^y}{\gamma}\left(1+\gamma{}c_e\right)-c_e\sigma^y}{\left(1+\gamma{}c_e\right)^2}\bd_n,\\\label{eq:zeta_d2}
+\pdfrac{\bzeta}{z}=\dfrac{\sigma^y}{1+\gamma{}c_e}\bd_n,\\\label{eq:zeta_d3}
     \pdfrac{\bzeta}{\bvarepsilon}=2G\mathbb{I}_\text{dev}.
 \end{gather}
 \subsubsection{Local System}
@@ -349,8 +349,8 @@ By noting that the derivatives of $\norm{\bzeta}$ can be further expanded as
     \pdfrac{\norm{\bzeta}}{}=\bn:\pdfrac{\bzeta}{},
 \end{gather}
 then
-\begin{gather}
-    \pdfrac{\norm{\beeta}}{\gamma}=\bn:\pdfrac{\bzeta}{\gamma}-2G-\pdfrac{}{\gamma}\left(\sqrt{\dfrac{2}{3}}b\dfrac{\gamma{}a^y}{1+\gamma{}b}+\sqrt{\dfrac{2}{3}}c_ez_e\left(1-z\right)\dfrac{\gamma{}\sigma^y}{1+\gamma{}c_e}\right),\\
+\begin{gather}\label{eq:eta_d1}
+\pdfrac{\norm{\beeta}}{\gamma}=\bn:\pdfrac{\bzeta}{\gamma}-2G-\pdfrac{}{\gamma}\left(\sqrt{\dfrac{2}{3}}b\dfrac{\gamma{}a^y}{1+\gamma{}b}+\sqrt{\dfrac{2}{3}}c_ez_e\left(1-z\right)\dfrac{\gamma{}\sigma^y}{1+\gamma{}c_e}\right),\\\label{eq:eta_d2}
     \pdfrac{\norm{\beeta}}{z}=\bn:\pdfrac{\bzeta}{z}+\sqrt{\dfrac{2}{3}}c_ez_e\dfrac{\gamma{}\sigma^y}{1+\gamma{}c_e}.
 \end{gather}
 \subsubsection{Consistent Tangent Operator}
@@ -378,27 +378,83 @@ By solving \eqsref{eq:local_equilibrium}, one could obtain $\ddfrac{\mb{x}}{\bva
 \end{gather}
 Now from the stress update expression $\bsigma=\bsigma^\text{trial}-\gamma2G\bn$, it is possible to derive the consistent tangent operator as
 \begin{gather}
-    \ddfrac{\bsigma}{\bvarepsilon}=\mb{D}-2G\left(\pdfrac{\bn}{\bvarepsilon}\gamma+\bn\ddfrac{\gamma}{\bvarepsilon}\right).
+    \ddfrac{\bsigma}{\bvarepsilon}=\mb{D}_e-2G\left(\pdfrac{\bn}{\bvarepsilon}\gamma+\bn\ddfrac{\gamma}{\bvarepsilon}\right),
 \end{gather}
+where $\mb{D}_e$ is the elastic stiffness.
 In the meantime, by $\bn=\dfrac{\bzeta}{\norm{\bzeta}}$, the derivative of $\bn$ with respect to $\bvarepsilon$ can be shown as
 \begin{gather}
     \pdfrac{\bn}{\bvarepsilon}=\dfrac{2G}{\norm{\bzeta}}\left(\mathbb{I}_\text{dev}-\bn\bn^\mT\right),
 \end{gather}
 after some algebra, the consistent tangent operator can be written as
-\begin{gather}
-    \ddfrac{\bsigma}{\bvarepsilon}=\mb{D}-\dfrac{4G^2\gamma}{\norm{\bzeta}}\mathbb{I}_\text{dev}+4G^2\left(\dfrac{\gamma}{\norm{\bzeta}}+\dfrac{1-\sqrt{\dfrac{2}{3}}\gamma{}\ddfrac{U}{z}}{\det\mb{J}}\right)\bn\bn^\mT.
+\begin{gather}\label{eq:consistent_tangent}
+\ddfrac{\bsigma}{\bvarepsilon}=\mb{D}_e-\dfrac{4G^2\gamma}{\norm{\bzeta}}\mathbb{I}_\text{dev}+4G^2\left(\dfrac{\gamma}{\norm{\bzeta}}+\dfrac{1-\sqrt{\dfrac{2}{3}}\gamma{}\ddfrac{U}{z}}{\det\mb{J}}\right)\bn\bn^\mT.
 \end{gather}
+\subsubsection{A Reference Algorithm}
+The complete algorithm is presented in \algoref{algo:subloading_steel}.
+It adopts a standard Newton--Raphson scheme to solve the local equilibrium.
+Noting that the local iteration does not involve complex tensor algebra, the algorithm can be implemented in a very efficient and concise manner.
+\begin{breakablealgorithm}
+    \caption{state determination of the subloading surface model}\label{algo:subloading_steel}
+    \begin{algorithmic}
+        \State \textbf{Parameter}: $E$, $\nu$, $\sigma^i$, $k_\text{iso}$, $\sigma^s_\text{iso}$, $m^s_\text{iso}$, $a^i$, $k_\text{kin}$, $a^s_\text{kin}$, $m^s_\text{kin}$, $b$, $u$, $c_e$, $z_e$
+        \State \textbf{Input}: $\bvarepsilon_{n+1}$, $\bvarepsilon_n$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
+        \State \textbf{Output}: $\mb{D}_{n+1}$, $\bsigma_{n+1}$, $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
+        \State compute trial stress $\bsigma^\text{trial}=\bsigma_n+\mb{D}_e\left(\bvarepsilon_{n+1}-\bvarepsilon_n\right)$\Comment{$\mb{D}_e$: elastic stiffness}
+        \State compute trial surface $f_s^\text{trial}$ using $\bsigma^\text{trial}$ and $\left(\cdot\right)_{n}$
+        \If{$f_s^\text{trial}\leqslant0$}\Comment{elastic unloading}
+        \State update $z$ by solving $\norm{\bs^\text{trial}-a^y_n\balpha_n+\left(z-1\right)\sigma^y_n\bd_n}=\sqrt{\dfrac{2}{3}}z\sigma^y_n$\Comment{$0\leqslant{}z\leqslant1$}
+        \State return
+        \EndIf
+        \State set history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
+        \State $\gamma=0$
+        \While{true}
+        \State update $q_{n+1}$ according to $\gamma$\Comment{\eqsref{eq:eqv_strain}}
+        \State update $a^y$ and $\sigma^y$ according to $q_{n+1}$\Comment{\eqsref{eq:iso_bone}, \eqsref{eq:kin_bone}}
+        \State compute $\bzeta_{n+1}$ and $\bn_{n+1}$\Comment{\eqsref{eq:zeta}}
+        \State update $\balpha_{n+1}$, $\bd_{n+1}$\Comment{\eqsref{eq:explicit_alpha}, \eqsref{eq:explicit_d}}
+        \State formulate $\mb{R}$\Comment{$\norm{\beeta}$ can be directly computed using \eqsref{eq:explicit_eta}}
+        \State formulate $\mb{J}$\Comment{\eqsref{eq:eta_d1} via \eqsref{eq:zeta_d1}, \eqsref{eq:eta_d2} via \eqsref{eq:zeta_d2}}
+        \State $\Delta=\mb{J}^{-1}\mb{R}$\Comment{$\Delta=\begin{bmatrix}\delta\gamma&\delta{}z\end{bmatrix}$}
+        \If{$\norm{\Delta}<\text{tolerance}$}
+        \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-2G\gamma\bn_{n+1}$\Comment{$G$: shear modulus}
+        \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
+        \State return
+        \EndIf
+        \State $\gamma\leftarrow\gamma-\delta\gamma$
+        \State $z\leftarrow{}z-\delta{}z$
+        \EndWhile
+    \end{algorithmic}
+\end{breakablealgorithm}
 \subsubsection{Remarks}
 Compared to the previous implementation, the formulation proposed in this work dramatically reduces the size of local system from \num{20} to \num{2}.
 We also present the explicit expression of the consistent tangent operator.
 If \eqsref{eq:original_z} can be explicitly integrated by choosing a specific function $U$ (such as the cotangent function used in the original proposal), the local system can be further reduced to a scalar residual.
-\subsection{Choice of $U$}
+\subsection{Selection of $U\left(z\right)$}
+The function $U\left(z\right)$ shall satisfy the following conditions.
+\begin{gather}
+    U\left(z\right)=\left\{
+    \begin{array}{ll}
+        +\infty, & z=0, \\
+        >0,      & z<1, \\
+        =0,      & z=1, \\
+        <0,      & z>1.
+    \end{array}\right.
+\end{gather}
+Three candidates are proposed, all contain a parameter $u$ to control the evolution rate.
+\begin{gather}
+    U\left(z\right)=u\cot\left(\dfrac{\pi}{2}z\right),\qquad
+    U\left(z\right)=-u\ln\left(z\right),\qquad
+    U\left(z\right)=u\left(\dfrac{1}{z}-1\right).
+\end{gather}
+The cotangent function is deemed `most beneficial' as $z$ can be explicitly integrated.
+However, it may not be the most numerically stable choice.
+
 It is clear that by construct, the subloading surface model ensures that the tangent stiffness satisfies the smoothness condition, that is, it is continuous. The corresponding potential function shall possess at least $C^2$ continuity.
 We are interested in whether such a continuous condition is achievable numerically.
 Furthermore, if it indeed can be achieved, is such a continuous condition really beneficial in terms of numerical performance.
 Here we discuss these problems by exploring the explicit expression for the tangent stiffness.
 
-For brevity, assuming no hardening and no elastic core, and $U\left(z\right)$ takes a general form, then the Jacobian could be simplified to
+For brevity, assuming no hardening and no elastic core, and $U\left(z\right)$ takes a general form, then the Jacobian (for the uniaxial model) could be simplified to
 \begin{gather}
     \mb{J}=\begin{bmatrix}
         -E & -\sigma^y    \\[2mm]
@@ -432,7 +488,7 @@ This proves that the tangent stiffness is continuous at $z=0$.
 However, noting that $\dfrac{U^2}{U-zU'}=-u\ln\left(z\right)$ quickly departs away from infinity, this continuity cannot be achieved numerically.
 For example, on platforms with the double precision (64-bit), the interval machine epsilon is $2^{-52}$, thus, $-\ln\left(2^{-52}\right)\approx\num{36}$.
 \subsubsection{A `Better' Choice}
-One can also choose the cotangent function $U\left(z\right)=u\cot\left(\dfrac{\pi}{2}z\right)$ so that $U'\left(z\right)=-\dfrac{u\pi}{2}\csc^2\left(\dfrac{\pi}{2}z\right)$, then
+One can also follow the recommendation and choose the cotangent function $U\left(z\right)=u\cot\left(\dfrac{\pi}{2}z\right)$ so that $U'\left(z\right)=-\dfrac{u\pi}{2}\csc^2\left(\dfrac{\pi}{2}z\right)$, then
 \begin{gather}
     \lim\limits_{z\to0^+}\dfrac{U^2}{U-zU'}=\lim\limits_{z\to0^+}u\dfrac{\cos\left(\pi{}z\right)+1}{\sin\left(\pi{}z\right)+\pi{}z}=\infty.
 \end{gather}
@@ -479,22 +535,22 @@ This often causes the local divergence.
                 scale only axis,
                 enlargelimits=false,
             ]
-            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/pow3.txt};
+            \addplot[mark=*, color=blue] table [x index=0, y index=1, col sep=space] {SCRIPT/pow3.txt};
             \addlegendentry{$z^{-0.2}$}
-            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/pow.txt};
+            \addplot[mark=square*, color=red] table [x index=0, y index=1, col sep=space] {SCRIPT/pow.txt};
             \addlegendentry{$z^{-0.5}$}
-            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/pow2.txt};
+            \addplot[mark=triangle*, color=green] table [x index=0, y index=1, col sep=space] {SCRIPT/pow2.txt};
             \addlegendentry{$z^{-1}$}
-            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/log.txt};
+            \addplot[mark=diamond*, color=purple] table [x index=0, y index=1, col sep=space] {SCRIPT/log.txt};
             \addlegendentry{$-\ln\left(z\right)$}
-            \addplot table [x index=0, y index=1, col sep=space] {SCRIPT/cot.txt};
+            \addplot[mark=o, color=orange] table [x index=0, y index=1, col sep=space] {SCRIPT/cot.txt};
             \addlegendentry{$\cot\left(z\right)$}
         \end{axis}
     \end{tikzpicture}
     \caption{reciprocal condition number of the Jacobian}\label{fig:rcond}
 \end{figure}
 When such a divergence occurs, sub-stepping would only make the system even more different to solve.
-This means, with functions that satisfy the strong numerical continuity condition, there exists a lower bound for the step size.
+It means, with functions that satisfy the strong numerical continuity condition, there exists a lower bound for the step size.
 
 Now, we shall ask the following question: what kind of functions shall be used?
 From the perspective of numerical stability, it appears to be better to choose functions that satisfy the weak numerical continuity condition only.
@@ -505,10 +561,16 @@ That is,
 
 It can be validated that the power function
 \begin{gather}
-    U\left(z\right)=z^{-n}-1\qquad\text{for}\qquad{}0<n
+    U\left(z\right)=u\left(z^{-n}-1\right)\qquad\text{for}\qquad{}0<n
 \end{gather}
 satisfies the weak condition.
 It is analytically continuous for all valid $n$.
 For $n\geqslant1$, it also satisfies the strong condition.
-However, when $n>1$, it is numerically unstable thus shall not be considered.
+However, when $n>1$, it is even less numerically stable thus shall not be considered.
 For $n<1$, it shows a similar behaviour to the logarithmic function, that is, does not present the ideal numerical continuity but is more numerically stable.
+
+Based on the above discussion, the recommendation shall be revised to choose the following function instead.
+\begin{gather}
+    U\left(z\right)=u\left(z^{-n}-1\right)\qquad\text{for}\qquad{}0<n\leqslant1.
+\end{gather}
+The exponent $n$ can be a user input parameter such that the balance between numerical stability and continuity can be adjusted on demand.
