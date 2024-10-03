@@ -252,7 +252,28 @@ The evolution of $\sigma^y$ depends on $q$, here we adopt general form that comb
     \dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma.
 \end{gather}
 \subsubsection{Summary}
-The key expressions are summarised as follows.
+The key expressions for both uniaxial and 3D models are summarised in \tabref{tab:summary}.
+Note the constant $\sqrt{\dfrac{2}{3}}$ is added to the evolution rules for $\alpha$ and $d$ in the uniaxial version to ensure the same set of parameters used for both models would yield the same results.
+They can be removed if such a consistency is not required.
+\begin{table}[htb]
+    \centering\renewcommand{\arraystretch}{1.4}
+    \caption{Summary of the subloading surface model}\label{tab:summary}
+    \begin{tabular}{rll}
+        \toprule
+                           & uniaxial                                                                                                     & 3D                                                                 \\\midrule
+        Constitutive Law   & $\sigma=E\left(\varepsilon-\varepsilon^p\right)$                                                             & $\bsigma=\mb{D}\left(\bvarepsilon-\bvarepsilon^p\right)$           \\
+        Subloading Surface & $f_s=\abs{\eta}-z\sigma^y$                                                                                   & $f_s=\norm{\beeta}-z\sqrt{\dfrac{2}{3}}\sigma^y$                   \\
+                           & $\eta=\sigma-a^y\alpha+\left(z-1\right)\sigma^yd$                                                            & $\beeta=\dev{\bsigma}-a^y\balpha+\left(z-1\right)\sigma^y\bd$      \\
+        Flow Rule          & $\dot{\varepsilon^p}=\gamma{}n$                                                                              & $\dot{\bvarepsilon^p}=\gamma{}\bn$                                 \\
+                           & $n=\sign{\eta}$                                                                                              & $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}$           \\
+        Evolution Laws     & $\dot{q}=\gamma$                                                                                             & $\dot{q}=\sqrt{\dfrac{2}{3}}\gamma$                                \\
+                           & $\dot{\alpha}=\sqrt{\dfrac{2}{3}}b\left(n-\alpha\right)\gamma$                                               & $\dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma$ \\
+                           & $\dot{d}=\sqrt{\dfrac{2}{3}}c_e\left(z_en-d\right)\gamma$                                                    & $\dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma$    \\
+                           & \multicolumn{2}{l}{$\dot{z}=U\dot{q}$}                                                                                                                                            \\
+                           & \multicolumn{2}{l}{$\sigma^y=\sigma^i+k_\text{iso}q+\sigma^s_\text{iso}\left(1-e^{-m^s_\text{iso}q}\right)$}                                                                      \\
+                           & \multicolumn{2}{l}{$a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right)$}                                                                                     \\\bottomrule
+    \end{tabular}
+\end{table}
 \subsection{Numerical Implementation}
 \subsubsection{Some Simplifications}
 Noting that $\dot{\balpha}$ is a linear function of $\balpha$, taking advantage of the implicit Euler method, one could express $\balpha$ in its explicit form.
