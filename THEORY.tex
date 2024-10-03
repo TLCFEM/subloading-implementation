@@ -149,6 +149,8 @@ then the evolution of $\bc$ can be equivalently described by the evolution of $\
     \dot{\bd}=c_e\left(z_e\bn-\bd\right)\gamma.
 \end{gather}
 Since $\bd$ defined in this manner is bounded by $z_e$, it is then guaranteed that $\bc-\bbeta\leqslant{}z_eF$.
+Such a decomposition separates the directional vector from the scalar magnitude, which allows much simpler evolution rules for both parts, although the vector here does not possess a fixed unit length.
+\eqsref{eq:decomposition_core} may be called the `pseudo-polar coordinate' representation.
 \subsubsection{Revised Evolution Rule (Back Stress)}
 Now since \eqsref{eq:decomposition_core} is adopted, it can also be applied to $\bbeta$ to allow its bound to evolve with the development of plasticity.
 \begin{gather}\label{eq:decomposition_back}
@@ -159,6 +161,8 @@ with $a^y=a^y\left(q\right)$ being the bound and $\balpha$ being the normalised 
     \dot{\balpha}=b\left(\bn-\balpha\right)\gamma,
 \end{gather}
 where $b$ is a constant that controls the evolution rate.
+\subsubsection{Remarks}
+We shall summarise the changes made to the original formulation before presenting a reference implementation.
 \subsection{A von Mises Material Model}
 Within the von Mises framework, the shifted stress shall be computed as
 \begin{gather}
