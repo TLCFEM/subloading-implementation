@@ -400,11 +400,6 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State \textbf{Input}: $\bvarepsilon_{n+1}$, $\bvarepsilon_n$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
         \State \textbf{Output}: $\mb{D}_{n+1}$, $\bsigma_{n+1}$, $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
         \State compute trial stress $\bsigma^\text{trial}=\bsigma_n+\mb{D}_e\left(\bvarepsilon_{n+1}-\bvarepsilon_n\right)$\Comment{$\mb{D}_e$: elastic stiffness}
-        \State compute trial surface $f_s^\text{trial}$ using $\bsigma^\text{trial}$ and $\left(\cdot\right)_{n}$
-        \If{$f_s^\text{trial}\leqslant0$}\Comment{elastic unloading}
-        \State update $z$ by solving $\norm{\bs^\text{trial}-a^y_n\balpha_n+\left(z-1\right)\sigma^y_n\bd_n}=\sqrt{\dfrac{2}{3}}z\sigma^y_n$\Comment{$0\leqslant{}z\leqslant1$}
-        \State return
-        \EndIf
         \State set history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
         \State $\gamma=0$
         \While{true}
@@ -416,13 +411,19 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State formulate $\mb{J}$\Comment{\eqsref{eq:eta_d1} via \eqsref{eq:zeta_d1}, \eqsref{eq:eta_d2} via \eqsref{eq:zeta_d2}}
         \State $\Delta=\mb{J}^{-1}\mb{R}$\Comment{$\Delta=\begin{bmatrix}\delta\gamma&\delta{}z\end{bmatrix}$}
         \If{$\norm{\Delta}<\text{tolerance}$}
-        \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-2G\gamma\bn_{n+1}$\Comment{$G$: shear modulus}
-        \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
-        \State return
+        \State break
         \EndIf
         \State $\gamma\leftarrow\gamma-\delta\gamma$
         \State $z\leftarrow{}z-\delta{}z$
         \EndWhile
+        \If{$\gamma>0$}\Comment{plastic loading}
+        \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-2G\gamma\bn_{n+1}$\Comment{$G$: shear modulus}
+        \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
+        \Else\Comment{elastic unloading}
+        \State reset history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$
+        \State $\bsigma_{n+1}=\sigma^\text{trial}$, $\mb{D}_{n+1}=\mb{D}_e$
+        \State update $z$ by solving $\norm{\bs_{n+1}-a^y_{n+1}\balpha_{n+1}+\left(z-1\right)\sigma^y_{n+1}\bd_{n+1}}=\sqrt{\dfrac{2}{3}}z\sigma^y_{n+1}$\Comment{$0\leqslant{}z\leqslant1$}
+        \EndIf
     \end{algorithmic}
 \end{breakablealgorithm}
 \subsubsection{Remarks}
