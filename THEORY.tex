@@ -404,7 +404,7 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State $\gamma=0$
         \While{true}
         \State update $q_{n+1}$ according to $\gamma$\Comment{\eqsref{eq:eqv_strain}}
-        \State update $a^y$ and $\sigma^y$ according to $q_{n+1}$\Comment{\eqsref{eq:iso_bone}, \eqsref{eq:kin_bone}}
+        \State update $a^y_{n+1}$ and $\sigma^y_{n+1}$ according to $q_{n+1}$\Comment{\eqsref{eq:iso_bone}, \eqsref{eq:kin_bone}}
         \State compute $\bzeta_{n+1}$ and $\bn_{n+1}$\Comment{\eqsref{eq:zeta}}
         \State update $\balpha_{n+1}$, $\bd_{n+1}$\Comment{\eqsref{eq:explicit_alpha}, \eqsref{eq:explicit_d}}
         \State formulate $\mb{R}$\Comment{$\norm{\beeta}$ can be directly computed using \eqsref{eq:explicit_eta}}
@@ -420,8 +420,10 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-2G\gamma\bn_{n+1}$\Comment{$G$: shear modulus}
         \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
         \Else\Comment{elastic unloading}
+        \State $\bsigma_{n+1}=\bsigma^\text{trial}$
+        \State $\mb{D}_{n+1}=\mb{D}_e$
         \State reset history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$
-        \State $\bsigma_{n+1}=\sigma^\text{trial}$, $\mb{D}_{n+1}=\mb{D}_e$
+        \State update $a^y_{n+1}$ and $\sigma^y_{n+1}$ accordingly
         \State update $z$ by solving $\norm{\bs_{n+1}-a^y_{n+1}\balpha_{n+1}+\left(z-1\right)\sigma^y_{n+1}\bd_{n+1}}=\sqrt{\dfrac{2}{3}}z\sigma^y_{n+1}$\Comment{$0\leqslant{}z\leqslant1$}
         \EndIf
     \end{algorithmic}
