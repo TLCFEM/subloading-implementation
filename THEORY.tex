@@ -61,7 +61,7 @@ By definition, $\bc$ denotes the homothetic centre between $f$ and $f_s$.
 Then, according to similarity, the new centre of the subloading surface is $\bbeta+\left(1-z\right)\left(\bc-\bbeta\right)$, that is $z\bbeta+\left(1-z\right)\bc$.
 \subsection{Original Evolution Rules}
 The original formulation further imposes the requirement such that the size of the elastic core shall be limited to a certain fraction of that of the yield surface.
-This is achieved by the following evolution rule for $\bc$,
+This is achieved by the following evolution rule for $\bc$ \citep{Anjiki2019,Hashiguchi2023},
 \begin{gather}\label{eq:original_core}
     \dot{\bc}=c_e\gamma\left(z_eF\bn-\left(\bc-\bbeta\right)\right)+\dot{\bbeta}+\dfrac{\dot{F}}{F}\left(\bc-\bbeta\right).
 \end{gather}
@@ -77,7 +77,7 @@ Both of the above evolution rules will be discussed and refined in the following
 Here, we only present them in there original form for completeness.
 \section{A Revised Formulation}
 \subsection{Preliminary Remarks}
-In the scalar form, the Armstrong--Frederick evolution rule is equivalent to the following ordinary differential equation,
+In the scalar form, the Armstrong--Frederick evolution rule \citep{Frederick2007} is equivalent to the following ordinary differential equation,
 \begin{equation}
     y'=b\left(a-y\right),
 \end{equation}
@@ -209,30 +209,6 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
 \end{figure}
 \subsubsection{Loading/Unloading Criterion}
 Apart from pure (un)loading, for arbitrary loading directions and magnitudes, there exists possibilities that the normal yield ratio $z$ may decrease first --- the subloading surface shrinks, then increase --- the subloading surface expands.
-
-In the trial state, by freezing plasticity, viz., $H$, $F$, $\balpha$ and $\bd$ are all kept constant, it can be concluded that the centre of the subloading surface must lie on the line defined by centre of the yield surface $\bbeta$ and the elastic core $\bc=\bbeta+F\bd$.
-Then for a given load increment $\Delta\bs$, there exists a scalar $r$ that can minimise $z$, we denote it as $z^\text{trial}$ since it is computed in the trial state.
-In mathematical terms, it can be expressed as
-\begin{gather}
-    \min\limits_{r\in\mathbb{R}}z^\text{trial},
-\end{gather}
-where $z^\text{trial}$ shall be computed by enforcing the corresponding $f_s^\text{trial}=0$.
-\begin{gather}
-    \begin{split}
-        f_s^\text{trial} & =\norm{\beeta^\text{trial}}-z^\text{trial}F_n                                                 \\
-                         & =\norm{\bs_n+r\Delta\bs-H_n\balpha_n+\left(z^\text{trial}-1\right)F_n\bd_n}-z^\text{trial}F_n \\
-                         & =\norm{\beeta_n+r\Delta\bs}-z^\text{trial}F_n                                                 \\
-                         & =0.
-    \end{split}
-\end{gather}
-The subscript $\left(\cdot\right)_n$ denotes the converged state at the beginning of the current loading step.
-There are two cases.
-\begin{enumerate}
-    \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
-          Since the elastic unloading portion reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion shall use this smaller $z$, instead of $z_n$, to correctly compute plasticity development.
-    \item For the rest, it is a pure (un)loading case.
-          Nothing additional needs to be done.
-\end{enumerate}
 A graphical representation is shown in \figref{fig:loading_criterion}.
 \begin{figure}[htb]
     \centering\footnotesize
@@ -285,6 +261,61 @@ A graphical representation is shown in \figref{fig:loading_criterion}.
     \end{tikzpicture}
     \caption{arbitrary loading direction with frozen plasticity}\label{fig:loading_criterion}
 \end{figure}
+
+In the trial state, by freezing plasticity, viz., $H$, $F$, $\balpha$ and $\bd$ are all kept constant, it can be concluded that the centre of the subloading surface must lie on the line defined by centre of the yield surface $\bbeta$ and the elastic core $\bc=\bbeta+F\bd$.
+Then for a given load increment $\Delta\bs$, there exists a scalar $r$ such that the corresponding stress state $\bs_n+r\Delta\bs$ can minimise $z$ by assuming proportional loading, we denote this $z$ as $z^\text{trial}$ since it is computed in the trial state.
+In mathematical terms, it can be expressed as
+\begin{gather}
+    \min\limits_{r\in\mathbb{R}}z^\text{trial}\left(r\right),
+\end{gather}
+where $z^\text{trial}$ shall be computed by enforcing the corresponding $f_s^\text{trial}=0$.
+\begin{gather}
+    \begin{split}
+        f_s^\text{trial} & =\norm{\beeta^\text{trial}}-z^\text{trial}F_n                                                 \\
+                         & =\norm{\bs_n+r\Delta\bs-H_n\balpha_n+\left(z^\text{trial}-1\right)F_n\bd_n}-z^\text{trial}F_n \\
+                         & =\norm{\bar{\beeta}+z^\text{trial}F_n\bd_n}-z^\text{trial}F_n                                 \\
+                         & =0,
+    \end{split}
+\end{gather}
+in which $\bar{\beeta}=\bar{\beeta}\left(r\right)=\bs_n-H_n\balpha_n-F_n\bd_n+r\Delta\bs$.
+The subscript $\left(\cdot\right)_n$ denotes the converged state at the beginning of the current loading step.
+Since no extra constraints are imposed on $r$ for the moment, a solution is guaranteed to exist.
+However, there are two cases.
+\begin{enumerate}
+    \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
+          Since the elastic unloading portion reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion shall use this smaller $z$, instead of $z_n$, as the starting value to correctly compute plasticity development.
+    \item For the rest, it is a pure (un)loading case.
+          Nothing additional needs to be done.
+\end{enumerate}
+
+Noting that $f_s^\text{trial}=0$ implies
+\begin{gather}
+    \left(\bar{\beeta}+z^\text{trial}F_n\bd_n\right):\left(\bar{\beeta}+z^\text{trial}F_n\bd_n\right)=\left(z^\text{trial}\right)^2F_n^2,
+\end{gather}
+which is effectively,
+\begin{gather}
+    \bar{\beeta}:\bar{\beeta}+2F_n\bar{\beeta}:\bd_nz^\text{trial}+F_n^2\left(\bd_n:\bd_n-1\right)\left(z^\text{trial}\right)^2=0.
+\end{gather}
+By the quadratic formula,
+\begin{gather}
+    z^\text{trial}=\dfrac{\bar{\beeta}:\bd_n+\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}}{F_n\left(1-\bd_n:\bd_n\right)}.
+\end{gather}
+Noting that $\norm{\bd_n}<z_e\leqslant1$, then, $1-\bd_n:\bd_n>0$, thus, the denominator is positive.
+Due to the same reason, $\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}>\abs{\bar{\beeta}:\bd_n}$.
+The other root is discarded since it may be negative.
+
+To minimise $z^\text{trial}$,
+\begin{gather}
+    \ddfrac{z^\text{trial}}{r}=0\quad\rightarrow\quad
+    \ddfrac{}{r}\left(\bar{\beeta}:\bd_n+\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}\right)=0.
+\end{gather}
+One can derive the explicit form as follows,
+\begin{gather}
+    \bd_n:\Delta\bs+\dfrac{\left(\bd_n:\bar{\beeta}\right)\left(\bd_n:\Delta\bs\right)+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\Delta\bs\right)}{\sqrt{\left(\bd_n:\bar{\beeta}\right)^2+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\bar{\beeta}\right)}}=0,
+\end{gather}
+which, in a general context, can be solved by the Newton--Raphson method.
+
+Compared to the recent work \citep[e.g.,][]{Hashiguchi2018}, here we have presented an equivalent but simpler approach to compute the starting normal yield ratio for arbitrary loading increments.
 \subsection{A von Mises Material Model}
 \subsubsection{Subloading Surface}
 For the von Mises criterion, $\bs$ shall take the form $\bs=\dev{\bsigma}$, then
@@ -508,7 +539,7 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
     \end{algorithmic}
 \end{breakablealgorithm}
 \subsubsection{Remarks}
-Compared to the previous implementation, the formulation proposed in this work dramatically reduces the size of local system from \num{20} to \num{2}.
+Compared to the previous implementation \citep{Anjiki2019}, the formulation proposed in this work dramatically reduces the size of local system from \num{20} to \num{2}.
 We also present the explicit expression of the consistent tangent operator.
 If \eqsref{eq:original_z} can be explicitly integrated by choosing a specific function $U$ (such as the cotangent function used in the original proposal), the local system can be further reduced to a scalar residual.
 \subsection{Selection of $U\left(z\right)$}
@@ -522,7 +553,7 @@ The function $U\left(z\right)$ shall satisfy the following conditions.
         <0,      & z>1.
     \end{array}\right.
 \end{gather}
-Three candidates are proposed, all contain a parameter $u$ to control the evolution rate.
+Three candidates are proposed \citep{Hashiguchi2017}, all contain a parameter $u$ to control the evolution rate.
 \begin{gather}
     U\left(z\right)=u\cot\left(\dfrac{\pi}{2}z\right),\qquad
     U\left(z\right)=-u\ln\left(z\right),\qquad
