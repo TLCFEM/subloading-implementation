@@ -187,7 +187,7 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
         \coordinate(A)at(\Ax,\Ay);
         \coordinate(B)at(\Bx,\By);
         \coordinate(C)at($(A)!0.375!(B)$);
-        \coordinate(D)at($(C)+(120:2.5)$);
+        \coordinate(D)at($(C)+(130:2.5)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
@@ -206,6 +206,57 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
         \draw[<-]($(A)!0.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)F\bd$};
     \end{tikzpicture}
     \caption{graphical representation of the surfaces using proposed definitions}\label{fig:revised_surfaces}
+\end{figure}
+\subsubsection{Loading/Unloading Criterion}
+Apart from pure (un)loading, for arbitrary loading directions and magnitudes, there exists possibilities that the normal yield ratio $z$ may decrease first --- the subloading surface shrinks, then increase --- the subloading surface expands.
+\begin{figure}[htb]
+    \centering\footnotesize
+    \begin{tikzpicture}[>=latex]
+        \newcommand{\Ax}{2.8}
+        \newcommand{\Ay}{3}
+        \newcommand{\Bx}{6}
+        \newcommand{\By}{3.8}
+        \newcommand{\DD}{100}
+        \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
+        \draw[->](-.5,0)--(3,0);
+        \draw[->](0,-.5)--(0,3);
+        \draw[black!40](B)--($(A)+(\DD:4)$);
+        % yield surface
+        \coordinate(A)at(\Ax,\Ay);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
+        \draw[dashed,draw,line width=.3mm](A)circle(4cm);
+        \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
+        % similarity centre
+        \coordinate(B)at(\Bx,\By);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
+        \draw[dotted,red,line width=.4mm](A)--(B);
+        % current subloading surface
+        \coordinate(C)at($(A)!0.375!(B)$);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
+        \draw[draw,line width=.6mm](C)circle(2.5cm);
+        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white]{subloading surface};
+        \coordinate(D)at($(C)+(\DD:2.5)$);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(D){};
+        % bigger subloading surface
+        \coordinate(CB)at($(A)!0.175!(B)$);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(CB){};
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CB)+(\DD:3.3cm)$){};
+        \draw[|<->|](CB)--++(\DD:3.3)node[midway,fill=white,sloped]{$z\uparrow$};
+        \draw[draw,line width=.6mm](CB)circle(3.3);
+        % smaller subloading surface
+        \coordinate(CS)at($(A)!0.575!(B)$);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at(CS){};
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CS)+(\DD:1.7cm)$){};
+        \draw[|<->|](CS)--++(\DD:1.7)node[midway,fill=white,sloped]{$z\downarrow$};
+        \draw[draw,line width=.6mm](CS)circle(1.7);
+        % arrows
+        \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta=H\balpha$};
+        \draw[->,red,line width=1mm](A)--(C);
+        \draw[->,red,line width=1mm](C)--(D)node[midway,fill=white,sloped]{$\beeta$};
+        \draw[<-]($(A)!0.3!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)F\bd$};
+        \draw[->,blue,line width=1mm](D)--++(210:3)node[fill=black,circle,inner sep=0,minimum size=2mm]{};
+    \end{tikzpicture}
+    \caption{arbitrary loading direction}\label{fig:loading_criterion}
 \end{figure}
 \subsection{A von Mises Material Model}
 \subsubsection{Subloading Surface}
