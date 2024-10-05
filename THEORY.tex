@@ -209,6 +209,31 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
 \end{figure}
 \subsubsection{Loading/Unloading Criterion}
 Apart from pure (un)loading, for arbitrary loading directions and magnitudes, there exists possibilities that the normal yield ratio $z$ may decrease first --- the subloading surface shrinks, then increase --- the subloading surface expands.
+
+In the trial state, by freezing plasticity, viz., $H$, $F$, $\balpha$ and $\bd$ are all kept constant, it can be concluded that the centre of the subloading surface must lie on the line defined by centre of the yield surface $\bbeta$ and the elastic core $\bc=\bbeta+F\bd$.
+Then for a given load increment $\Delta\bs$, there exists a scalar $r$ that can minimise $z$, we denote it as $z^\text{trial}$ since it is computed in the trial state.
+In mathematical terms, it can be expressed as
+\begin{gather}
+    \min\limits_{r\in\mathbb{R}}z^\text{trial},
+\end{gather}
+where $z^\text{trial}$ shall be computed by enforcing the corresponding $f_s^\text{trial}=0$.
+\begin{gather}
+    \begin{split}
+        f_s^\text{trial} & =\norm{\beeta^\text{trial}}-z^\text{trial}F_n                                                 \\
+                         & =\norm{\bs_n+r\Delta\bs-H_n\balpha_n+\left(z^\text{trial}-1\right)F_n\bd_n}-z^\text{trial}F_n \\
+                         & =\norm{\beeta_n+r\Delta\bs}-z^\text{trial}F_n                                                 \\
+                         & =0.
+    \end{split}
+\end{gather}
+The subscript $\left(\cdot\right)_n$ denotes the converged state at the beginning of the current loading step.
+There are two cases.
+\begin{enumerate}
+    \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
+          Since the elastic unloading portion reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion shall use this smaller $z$, instead of $z_n$, to correctly compute plasticity development.
+    \item For the rest, it is a pure (un)loading case.
+          Nothing additional needs to be done.
+\end{enumerate}
+A graphical representation is shown in \figref{fig:loading_criterion}.
 \begin{figure}[htb]
     \centering\footnotesize
     \begin{tikzpicture}[>=latex]
@@ -216,10 +241,10 @@ Apart from pure (un)loading, for arbitrary loading directions and magnitudes, th
         \newcommand{\Ay}{3}
         \newcommand{\Bx}{6}
         \newcommand{\By}{3.8}
-        \newcommand{\DD}{100}
+        \newcommand{\DD}{70}
         \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
-        \draw[->](-.5,0)--(3,0);
-        \draw[->](0,-.5)--(0,3);
+        \draw[->](-.5,0)--(2,0);
+        \draw[->](0,-.5)--(0,2);
         \draw[black!40](B)--($(A)+(\DD:4)$);
         % yield surface
         \coordinate(A)at(\Ax,\Ay);
@@ -229,12 +254,12 @@ Apart from pure (un)loading, for arbitrary loading directions and magnitudes, th
         % similarity centre
         \coordinate(B)at(\Bx,\By);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
-        \draw[dotted,red,line width=.4mm](A)--(B);
+        \draw[dotted,red,line width=.4mm]($(B)!2.5!(A)$)--($(A)!1.5!(B)$)node[black,right,align=left]{centre of the subloading\\surface must lie on this\\fixed line};
         % current subloading surface
         \coordinate(C)at($(A)!0.375!(B)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
         \draw[draw,line width=.6mm](C)circle(2.5cm);
-        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white]{subloading surface};
+        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(.5,0)node[right,fill=white]{current subloading surface};
         \coordinate(D)at($(C)+(\DD:2.5)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(D){};
         % bigger subloading surface
@@ -242,21 +267,23 @@ Apart from pure (un)loading, for arbitrary loading directions and magnitudes, th
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(CB){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CB)+(\DD:3.3cm)$){};
         \draw[|<->|](CB)--++(\DD:3.3)node[midway,fill=white,sloped]{$z\uparrow$};
-        \draw[draw,line width=.6mm](CB)circle(3.3);
+        \draw[black!40,draw,line width=.6mm](CB)circle(3.3);
         % smaller subloading surface
         \coordinate(CS)at($(A)!0.575!(B)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(CS){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CS)+(\DD:1.7cm)$){};
         \draw[|<->|](CS)--++(\DD:1.7)node[midway,fill=white,sloped]{$z\downarrow$};
-        \draw[draw,line width=.6mm](CS)circle(1.7);
+        \draw[black!40,draw,line width=.6mm](CS)circle(1.7);
         % arrows
         \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta=H\balpha$};
         \draw[->,red,line width=1mm](A)--(C);
         \draw[->,red,line width=1mm](C)--(D)node[midway,fill=white,sloped]{$\beeta$};
         \draw[<-]($(A)!0.3!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)F\bd$};
-        \draw[->,blue,line width=1mm](D)--++(210:3)node[fill=black,circle,inner sep=0,minimum size=2mm]{};
+        \draw[dotted,line width=.4mm]($(D)+(180:6)$)--($(D)+(0:2)$)node[right,align=left]{search along the loading\\direction to minimise $z$};
+        \draw[->,blue,line width=1mm](D)--++(180:2.8)node[fill=black,circle,inner sep=0,minimum size=2mm]{};
+        \draw[<-]($(D)+(180:2)$)--++(135:2.5)--++(-1,0)node[left,align=right]{load increment $\Delta\bs$\\$z$ decreases first\\then increases};
     \end{tikzpicture}
-    \caption{arbitrary loading direction}\label{fig:loading_criterion}
+    \caption{arbitrary loading direction with frozen plasticity}\label{fig:loading_criterion}
 \end{figure}
 \subsection{A von Mises Material Model}
 \subsubsection{Subloading Surface}
@@ -451,6 +478,7 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State \textbf{Input}: $\bvarepsilon_{n+1}$, $\bvarepsilon_n$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
         \State \textbf{Output}: $\mb{D}_{n+1}$, $\bsigma_{n+1}$, $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
         \State compute trial stress $\bsigma^\text{trial}=\bsigma_n+\mb{D}_e\left(\bvarepsilon_{n+1}-\bvarepsilon_n\right)$\Comment{$\mb{D}_e$: elastic stiffness}
+        \State check loading criterion and correct $z_n$ if necessary
         \State set history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
         \State $\gamma=0$
         \While{true}
