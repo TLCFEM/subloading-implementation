@@ -317,6 +317,7 @@ which, in a general context, can be solved by the Newton--Raphson method.
 
 Compared to the recent work \citep[e.g.,][]{Hashiguchi2018,Anjiki2019}, here we have presented an equivalent but simpler approach to compute the starting normal yield ratio for arbitrary loading increments.
 \subsection{A von Mises Material Model}
+In the following, we present discrete expressions under the von Mises framework.
 \subsubsection{Subloading Surface}
 For the von Mises criterion, $\bs$ shall take the form $\bs=\dev{\bsigma}$, then
 \begin{gather}
@@ -433,6 +434,7 @@ Its derivatives can be computed as follows.
 \pdfrac{\bzeta}{z}=\dfrac{\sigma^y}{1+\gamma{}c_e}\bd_n,\\\label{eq:zeta_d3}
     \pdfrac{\bzeta}{\bvarepsilon}=2G\mathbb{I}_\text{dev}.
 \end{gather}
+The above simplifications are valid under the assumption of associative plasticity flow.
 \subsubsection{Local System}
 The local system consists of two residuals, $f_s$ and $z$.
 \begin{gather}
