@@ -99,11 +99,10 @@ However, as noted in the literature, the corresponding solution is not strictly 
             \begin{axis}[axis lines=middle,xlabel=$x$,ylabel=$y$,grid=both,width=6.5cm,height=4.5cm,legend pos=south east,ymin=0,ymax=1.5,scale only axis,enlargelimits=false]
                 \pgfmathsetmacro{\aa}{-.05}
                 \pgfmathsetmacro{\bb}{1}
-                \pgfmathsetmacro{\cc}{1}
                 \addplot[domain=0:10,samples=100,color=blue]{\aa*x+\bb};
-                \addplot[domain=0:10,samples=100,color=red]{\aa*x+\bb+(\aa/\cc-\bb)*exp(-\cc*x)-\aa/\cc};
+                \addplot[domain=0:10,samples=100,color=red]{\aa*x+\bb+(\aa-\bb)*exp(-x)-\aa};
                 \addlegendentry{$f(x)=\aa{}x+\bb$}
-                \addlegendentry{$\dot{y}=\cc\left(f(x)-y\right)$}
+                \addlegendentry{$\dot{y}=f(x)-y$}
             \end{axis}
         \end{tikzpicture}
         \caption{softening}
@@ -113,16 +112,15 @@ However, as noted in the literature, the corresponding solution is not strictly 
             \begin{axis}[axis lines=middle,xlabel=$x$,ylabel=$y$,grid=both,width=6.5cm,height=4.5cm,legend pos=south east,ymin=0,ymax=1.5,scale only axis,enlargelimits=false]
                 \pgfmathsetmacro{\aa}{0.05}
                 \pgfmathsetmacro{\bb}{1}
-                \pgfmathsetmacro{\cc}{1}
                 \addplot[domain=0:10,samples=100,color=blue]{\aa*x+\bb};
-                \addplot[domain=0:10,samples=100,color=red]{\aa*x+\bb+(\aa/\cc-\bb)*exp(-\cc*x)-\aa/\cc};
+                \addplot[domain=0:10,samples=100,color=red]{\aa*x+\bb+(\aa-\bb)*exp(-x)-\aa};
                 \addlegendentry{$f(x)=\aa{}x+\bb$}
-                \addlegendentry{$\dot{y}=\cc\left(f(x)-y\right)$}
+                \addlegendentry{$\dot{y}=f(x)-y$}
             \end{axis}
         \end{tikzpicture}
         \caption{hardening}
     \end{subfigure}
-    \caption{examples}\label{fig:examples}
+    \caption{asymptotic behaviour with hardening and softening bounds}\label{fig:examples}
 \end{figure}
 As can be seen from the figure, the solution may overshoot for softening bounds.
 Furthermore, in both cases, the solution $y$ does \textbf{not} asymptotically approach the bound $f(x)$.
@@ -140,7 +138,7 @@ The corresponding ODE can be derived as follows,
 \begin{gather}\label{eq:strict_bound}
     y'=fb\exp\left(-bx\right)+f'\left(1-\exp\left(-bx\right)\right)=b\left(f-y\right)+\dfrac{f'}{f}y.
 \end{gather}
-After careful comparison, one could observe that \eqsref{eq:strict_bound} is in fact the scalar version of the evolution rule presented in \eqsref{eq:original_core}.
+After careful comparison, one could observe that \eqsref{eq:strict_bound} is in fact the scalar unidirectional version of the evolution rule presented in \eqsref{eq:original_core}.
 They bear the same format.
 \subsubsection{Revised Evolution Rule (Elastic Core)}
 The evolution rule for $\bc$ shown in \eqsref{eq:original_core} is derived at the limit state where the subloading surface coincides with the limit surface --- which would not occur due to its asymptotic nature.
@@ -171,7 +169,7 @@ Similar to $\norm{\bc-\bbeta}$, here it is guaranteed that $\norm{\bbeta}=H\norm
 
 It is possible to associate $H$ with $F$ such that $H$ is set to a fraction of $F$.
 Here, to allow more flexibility, $H$ is defined as an independent quantity.
-Nevertheless, if one wishes, it is possible to associate $H$ with $F$ as done in other work \citep[e.g.,]{Anjiki2019}.
+Nevertheless, if one wishes, it is possible to associate $H$ with $F$ as done in other work \citep[e.g.,][]{Anjiki2019}.
 \subsubsection{Shifted Stress}
 The original formulation uses the following expression to compute the shifted stress $\beeta$,
 \begin{gather}
