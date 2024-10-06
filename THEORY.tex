@@ -29,30 +29,32 @@ The subloading surface is then pulled from the original centre $\bbeta$ towards 
         \newcommand{\Ay}{3}
         \newcommand{\Bx}{6}
         \newcommand{\By}{3.8}
+        \newcommand{\FF}{4}
+        \newcommand{\SF}{2.5}
         \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
         \draw[->](-.5,0)--(3,0);
         \draw[->](0,-.5)--(0,3);
         \coordinate(A)at(\Ax,\Ay);
         \coordinate(B)at(\Bx,\By);
-        \coordinate(C)at($(A)!0.375!(B)$);
+        \coordinate(C)at($(B)!\SF/\FF!(A)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
-        \draw[dashed,draw,line width=.3mm](A)circle(4cm);
-        \draw[dotted,draw,line width=.3mm](A)circle(2.5cm);
-        \draw[draw,line width=.6mm](C)circle(2.5cm);
+        \draw[dashed,draw,line width=.3mm](A)circle(\FF);
+        \draw[dotted,draw,line width=.3mm](A)circle(\SF);
+        \draw[draw,line width=.6mm](C)circle(\SF);
         \draw[->,red,line width=.4mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta$};
         \draw[->,red,line width=.6mm](A)--(B);
         \draw[->,red,line width=.4mm](0,0)--(B)node[midway,fill=white,sloped]{$\bc$};
         \draw[->,blue,line width=.8mm](A)--(C);
-        \draw[|<->|](A)--++(140:4)node[midway,fill=white,sloped]{$F$};
-        \draw[|<->|](C)--++(140:2.5)node[midway,fill=white,sloped]{$zF$};
-        \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
-        \draw[<-]($(A)+(60:2.5)$)--++(60:1)--++(2,0)node[right,fill=white,align=left]{subloading surface\\in the original proposal};
-        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white,align=left]{subloading surface\\in the extended version};
-        \draw[<-]($(C)!0.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$z\left(\bc-\bbeta\right)$};
-        \draw[<-]($(A)!0.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)\left(\bc-\bbeta\right)$};
-        \draw[black!20]($(A)+(140:4)$)--(B);
+        \draw[|<->|](A)--++(140:\FF)node[midway,fill=white,sloped]{$F$};
+        \draw[|<->|](C)--++(140:\SF)node[midway,fill=white,sloped]{$zF$};
+        \draw[<-]($(A)+(60:\FF)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
+        \draw[<-]($(A)+(60:\SF)$)--++(60:1)--++(2,0)node[right,fill=white,align=left]{subloading surface\\in the original proposal};
+        \draw[<-]($(C)+(60:\SF)$)--++(60:1.7)--++(1,0)node[right,fill=white,align=left]{subloading surface\\in the extended version};
+        \draw[<-]($(C)!.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$z\left(\bc-\bbeta\right)$};
+        \draw[<-]($(A)!.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)\left(\bc-\bbeta\right)$};
+        \draw[black!20]($(A)+(140:\FF)$)--(B);
     \end{tikzpicture}
     \caption{graphical representation of the surfaces used in the subloading surface model}\label{fig:surfaces}
 \end{figure}
@@ -188,34 +190,39 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
         \newcommand{\Ay}{3}
         \newcommand{\Bx}{6}
         \newcommand{\By}{3.8}
+        \newcommand{\FF}{4}
+        \newcommand{\SF}{2.5}
         \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
         \draw[->](-.5,0)--(3,0);
         \draw[->](0,-.5)--(0,3);
         \coordinate(A)at(\Ax,\Ay);
         \coordinate(B)at(\Bx,\By);
-        \coordinate(C)at($(A)!0.375!(B)$);
-        \coordinate(D)at($(C)+(130:2.5)$);
+        \coordinate(C)at($(B)!\SF/\FF!(A)$);
+        \coordinate(D)at($(C)+(130:\SF)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(D){};
-        \draw[dashed,draw,line width=.3mm](A)circle(4cm);
-        \draw[draw,line width=.6mm](C)circle(2.5cm);
+        \draw[dashed,draw,line width=.3mm](A)circle(\FF);
+        \draw[draw,line width=.6mm](C)circle(\SF);
         \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta=H\balpha$};
         \draw[->,dotted,red,line width=.4mm](C)--(B);
         \draw[->,red,line width=1mm](A)--(C);
         \draw[->,red,line width=1mm](C)--(D)node[midway,fill=white]{$\beeta$};
         \draw[->,red,line width=1mm](0,0)--(D)node[midway,fill=white,sloped]{$\bs$};
-        \draw[|<->|](C)--++(45:2.5)node[midway,fill=white,sloped]{$zF$};
-        \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
-        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(1,0)node[right,fill=white]{subloading surface};
-        \draw[<-]($(C)!0.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$zF\bd$};
-        \draw[<-]($(A)!0.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)F\bd$};
+        \draw[|<->|](C)--++(45:\SF)node[midway,fill=white,sloped]{$zF$};
+        \draw[<-]($(A)+(60:\FF)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
+        \draw[<-]($(C)+(60:\SF)$)--++(60:1.7)--++(1,0)node[right,fill=white]{subloading surface};
+        \draw[<-]($(C)!.5!(B)$)--++(-60:1.5)--++(2,0)node[right,fill=white]{$zF\bd$};
+        \draw[<-]($(A)!.5!(C)$)--++(-60:2)--++(2.5,0)node[right,fill=white]{$\left(1-z\right)F\bd$};
     \end{tikzpicture}
     \caption{graphical representation of the surfaces using proposed definitions}\label{fig:revised_surfaces}
 \end{figure}
 \subsubsection{Loading/Unloading Criterion}
-Apart from pure (un)loading, for arbitrary loading directions and magnitudes, there exists possibilities that the normal yield ratio $z$ may decrease first --- the subloading surface shrinks, then increase --- the subloading surface expands.
+The conventional Kuhn--Tucker condition cannot be applied in the subloading surface model as even for elastic unloading, the history variable $z$ shall be updated accordingly.
+For arbitrary loading directions and magnitudes, there exists possibilities that the normal yield ratio $z$ may decrease first --- the subloading surface shrinks, then increase --- the subloading surface expands.
+When it expands, the plasticity can only be correctly computed with the correct initial value of $z$.
+An inward load increment resulting in $f_s^\text{trial}<0$ does not necessarily imply that it is a pure elastic unloading step.
 A graphical representation is shown in \figref{fig:loading_criterion}.
 \begin{figure}[htb]
     \centering\footnotesize
@@ -225,38 +232,42 @@ A graphical representation is shown in \figref{fig:loading_criterion}.
         \newcommand{\Bx}{6}
         \newcommand{\By}{3.8}
         \newcommand{\DD}{70}
+        \newcommand{\FF}{4}
+        \newcommand{\SF}{2.5}
+        \newcommand{\BF}{3.3}
+        \newcommand{\LF}{1.7}
         \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
         \draw[->](-.5,0)--(2,0);
         \draw[->](0,-.5)--(0,2);
-        \draw[black!40](B)--($(A)+(\DD:4)$);
+        \draw[black!40](B)--($(A)+(\DD:\FF)$);
         % yield surface
         \coordinate(A)at(\Ax,\Ay);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
-        \draw[dashed,draw,line width=.3mm](A)circle(4cm);
-        \draw[<-]($(A)+(60:4)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
+        \draw[dashed,draw,line width=.3mm](A)circle(\FF);
+        \draw[<-]($(A)+(60:\FF)$)--++(60:1.4)--++(1,0)node[right,fill=white]{yield surface $f$};
         % similarity centre
         \coordinate(B)at(\Bx,\By);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
         \draw[dotted,red,line width=.4mm]($(B)!2.5!(A)$)--($(A)!1.5!(B)$)node[black,right,align=left]{centre of the subloading\\surface must lie on this\\fixed line};
         % current subloading surface
-        \coordinate(C)at($(A)!0.375!(B)$);
+        \coordinate(C)at($(B)!\SF/\FF!(A)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
-        \draw[draw,line width=.6mm](C)circle(2.5cm);
-        \draw[<-]($(C)+(60:2.5)$)--++(60:1.7)--++(.5,0)node[right,fill=white]{current subloading surface};
-        \coordinate(D)at($(C)+(\DD:2.5)$);
+        \draw[draw,line width=.6mm](C)circle(\SF);
+        \draw[<-]($(C)+(60:\SF)$)--++(60:1.7)--++(.5,0)node[right,fill=white]{current subloading surface};
+        \coordinate(D)at($(C)+(\DD:\SF)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(D){};
         % bigger subloading surface
-        \coordinate(CB)at($(A)!0.175!(B)$);
+        \coordinate(CB)at($(B)!\BF/\FF!(A)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(CB){};
-        \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CB)+(\DD:3.3cm)$){};
-        \draw[|<->|](CB)--++(\DD:3.3)node[midway,fill=white,sloped]{$z\uparrow$};
-        \draw[black!40,draw,line width=.6mm](CB)circle(3.3);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CB)+(\DD:\BF)$){};
+        \draw[|<->|](CB)--++(\DD:\BF)node[midway,fill=white,sloped]{$z\uparrow$};
+        \draw[black!40,draw,line width=.6mm](CB)circle(\BF);
         % smaller subloading surface
-        \coordinate(CS)at($(A)!0.575!(B)$);
+        \coordinate(CS)at($(B)!\LF/\FF!(A)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(CS){};
-        \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CS)+(\DD:1.7cm)$){};
-        \draw[|<->|](CS)--++(\DD:1.7)node[midway,fill=white,sloped]{$z\downarrow$};
-        \draw[black!40,draw,line width=.6mm](CS)circle(1.7);
+        \node[fill=black,circle,inner sep=0,minimum size=2mm]at($(CS)+(\DD:\LF)$){};
+        \draw[|<->|](CS)--++(\DD:\LF)node[midway,fill=white,sloped]{$z\downarrow$};
+        \draw[black!40,draw,line width=.6mm](CS)circle(\LF);
         % arrows
         \draw[->,red,line width=1mm](0,0)--(A)node[midway,fill=white,sloped]{$\bbeta=H\balpha$};
         \draw[->,red,line width=1mm](A)--(C);
