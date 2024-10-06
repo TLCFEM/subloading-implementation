@@ -322,6 +322,17 @@ Its explicit form can be further expressed as follows,
 \end{gather}
 which, in a general context, can be solved by the Newton--Raphson method.
 
+Let $R_r$ denote the residual
+\begin{multline}
+    R_r=\left(\bd_n:\Delta\bs\right)\sqrt{\left(\bd_n:\bar{\beeta}\right)^2+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\bar{\beeta}\right)}\\
+    +\left(\bd_n:\bar{\beeta}\right)\left(\bd_n:\Delta\bs\right)+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\Delta\bs\right).
+\end{multline}
+It's derivative with regard to $r$ is
+\begin{multline}
+    \ddfrac{R_r}{r}=\left(\bd_n:\Delta\bs\right)\dfrac{\left(\bd_n:\bar{\beeta}\right)\left(\bd_n:\Delta\bs\right)+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\Delta\bs\right)}{\sqrt{\left(\bd_n:\bar{\beeta}\right)^2+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\bar{\beeta}\right)}}\\
+    +\left(\bd_n:\Delta\bs\right)^2+\left(1-\bd_n:\bd_n\right)\left(\Delta\bs:\Delta\bs\right).
+\end{multline}
+
 Compared to the recent work \citep[e.g.,][]{Hashiguchi2018,Anjiki2019}, here we have presented an equivalent but simpler approach to compute the starting normal yield ratio for arbitrary loading increments.
 \subsection{A von Mises Material Model}
 In the following, we present discrete expressions under the von Mises framework.
