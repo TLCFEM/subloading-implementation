@@ -291,8 +291,8 @@ However, there are two cases.
 \begin{enumerate}
     \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
           Since the elastic unloading portion reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion shall use this smaller $z$, instead of $z_n$, as the starting value to correctly compute plasticity development.
-    \item For the rest, it is a pure (un)loading case.
-          Nothing additional needs to be done.
+    \item If $r\geqslant1$, the given load increment $\Delta\bs$ involves only elastic unloading.
+    \item If $r\leqslant0$, it is a pure (un)loading case. Nothing additional needs to be done. $z_n$ is the correct starting value for return mapping.
 \end{enumerate}
 
 Noting that $f_s^\text{trial}=0$ implies
@@ -341,19 +341,18 @@ For specific cases as can be seen later, the expressions may be different.
     \caption{correct starting value of normal yield ratio $z$}\label{algo:loading_criterion}
     \begin{algorithmic}
         \State \textbf{Input}: $\bsigma^\text{trial}$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
-        \State \textbf{Output}: $z_{n}$
+        \State \textbf{Output}: $r$
         \State compute $\Delta\bs=\bs^\text{trial}-\bs_n$ using $\bsigma^\text{trial}$ and $\bsigma_n$
         \State $r=0$
         \While{true}
         \State $\bar{\beeta}=\bar{\beeta}\left(r\right)=\bs_n-H_n\balpha_n-F_n\bd_n+r\Delta\bs$
-        \State formulate $R_r$\Comment{\eqsref{eq:z_residual}}
-        \State formulate $J_r$\Comment{\eqsref{eq:z_derivative}}
+        \State formulate $R_r$ and $J_r$\Comment{\eqsref{eq:z_residual}, \eqsref{eq:z_derivative}}
         \State $\delta{}r=R_r/J_r$
         \If{$\norm{\delta{}r}<\text{tolerance}$}
         \If{$0<r<1$}\Comment{current loading increment contains elastic unloading}
         \State update $z_{n}=z^\text{trial}$\Comment{compute $z^\text{trial}$ using $r$ via \eqsref{eq:z_trial}}
         \EndIf
-        \State return
+        \State return $r$
         \EndIf
         \State $r\leftarrow{}r-\delta{}r$
         \EndWhile
@@ -554,8 +553,14 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State \textbf{Input}: $\bvarepsilon_{n+1}$, $\bvarepsilon_n$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
         \State \textbf{Output}: $\mb{D}_{n+1}$, $\bsigma_{n+1}$, $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
         \State compute trial stress $\bsigma^\text{trial}=\bsigma_n+\mb{D}_e\left(\bvarepsilon_{n+1}-\bvarepsilon_n\right)$\Comment{$\mb{D}_e$: elastic stiffness}
-        \State check loading criterion and correct $z_n$ if necessary\Comment{\algoref{algo:loading_criterion}}
         \State set history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
+        \State check loading criterion and correct $z_n$ if necessary\Comment{\algoref{algo:loading_criterion}}
+        \If{$r\geqslant1$}\Comment{elastic unloading}
+        \State $\bsigma_{n+1}=\bsigma^\text{trial}$
+        \State $\mb{D}_{n+1}=\mb{D}_e$
+        \State update $z$ by solving $\norm{\bs_{n+1}-a^y_{n+1}\balpha_{n+1}+\left(z-1\right)\sigma^y_{n+1}\bd_{n+1}}=\sqrt{\dfrac{2}{3}}z\sigma^y_{n+1}$\Comment{$0\leqslant{}z\leqslant1$}
+        \State return
+        \EndIf
         \State $\gamma=0$
         \While{true}
         \State update $q_{n+1}$ according to $\gamma$\Comment{\eqsref{eq:eqv_strain}}
@@ -566,21 +571,13 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State formulate $\mb{J}$\Comment{\eqsref{eq:eta_d1} via \eqsref{eq:zeta_d1}, \eqsref{eq:eta_d2} via \eqsref{eq:zeta_d2}}
         \State $\Delta=\mb{J}^{-1}\mb{R}$\Comment{$\Delta=\begin{bmatrix}\delta\gamma&\delta{}z\end{bmatrix}$}
         \If{$\norm{\Delta}<\text{tolerance}$}
-        \State break
+        \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-\gamma2G\bn_{n+1}$\Comment{$G$: shear modulus}
+        \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
+        \State return
         \EndIf
         \State $\gamma\leftarrow\gamma-\delta\gamma$
         \State $z\leftarrow{}z-\delta{}z$
         \EndWhile
-        \If{$\gamma>0$}\Comment{plastic loading}
-        \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-2G\gamma\bn_{n+1}$\Comment{$G$: shear modulus}
-        \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
-        \Else\Comment{elastic unloading}
-        \State $\bsigma_{n+1}=\bsigma^\text{trial}$
-        \State $\mb{D}_{n+1}=\mb{D}_e$
-        \State reset history variables $\left(\cdot\right)_{n+1}=\left(\cdot\right)_{n}$ for $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$
-        \State update $a^y_{n+1}$ and $\sigma^y_{n+1}$ accordingly
-        \State update $z$ by solving $\norm{\bs_{n+1}-a^y_{n+1}\balpha_{n+1}+\left(z-1\right)\sigma^y_{n+1}\bd_{n+1}}=\sqrt{\dfrac{2}{3}}z\sigma^y_{n+1}$\Comment{$0\leqslant{}z\leqslant1$}
-        \EndIf
     \end{algorithmic}
 \end{breakablealgorithm}
 \subsubsection{Remarks}
