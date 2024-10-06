@@ -187,9 +187,10 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
     \centering\footnotesize
     \begin{tikzpicture}[>=latex]
         \newcommand{\Ax}{2.8}
-        \newcommand{\Ay}{3}
+        \newcommand{\Ay}{.4}
         \newcommand{\Bx}{6}
-        \newcommand{\By}{3.8}
+        \newcommand{\By}{1.8}
+        \newcommand{\DD}{80}
         \newcommand{\FF}{4}
         \newcommand{\SF}{2.5}
         \pgfmathsetmacro{\RR}{sqrt((\Bx-\Ax)^2+(\By-\Ay)^2)}
@@ -198,7 +199,7 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
         \coordinate(A)at(\Ax,\Ay);
         \coordinate(B)at(\Bx,\By);
         \coordinate(C)at($(B)!\SF/\FF!(A)$);
-        \coordinate(D)at($(C)+(130:\SF)$);
+        \coordinate(D)at($(C)+(\DD:\SF)$);
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(A){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(B){};
         \node[fill=black,circle,inner sep=0,minimum size=2mm]at(C){};
@@ -218,6 +219,7 @@ Account for the proposed decompositions \eqsref{eq:decomposition_core} and \eqsr
     \end{tikzpicture}
     \caption{graphical representation of the surfaces using proposed definitions}\label{fig:revised_surfaces}
 \end{figure}
+It could also be noted that, since $\norm{\bd}<1$, then $\norm{zF\bd}<zF$, the homothetic centre is always inside the subloading surface $f_s$, which itself is inside the yield surface $f$.
 \subsubsection{Loading/Unloading Criterion}
 The conventional Kuhn--Tucker condition cannot be applied in the subloading surface model as even for elastic unloading, the history variable $z$ shall be updated accordingly.
 For arbitrary loading directions and magnitudes, there exists possibilities that the normal yield ratio $z$ may decrease first --- the subloading surface shrinks, then increase --- the subloading surface expands.
@@ -397,28 +399,28 @@ The accumulated plastic strain $q$ simply takes the accumulated magnitude of $\b
 The evolution of $\sigma^y$ depends on $q$, here we adopt general form that combines linear hardening and nonlinear saturation.
 \begin{gather}\label{eq:iso_bone}
     \sigma^y=\sigma^i+k_\text{iso}q+\sigma^s_\text{iso}\left(1-e^{-m^s_\text{iso}q}\right),
-    \end{gather}
-    where $\sigma^i$ is the initial yield stress, $k_\text{iso}$ is the isotropic hardening modulus, $\sigma^s_\text{iso}$ is the saturation stress, and $m^s_\text{iso}$ is the saturation rate.
-    \paragraph{Kinematic Hardening}
-    The kinematic hardening bound $H$ is replaced with a discrete function $a^y$ that takes a similar form to $\sigma^y$,
-    \begin{gather}\label{eq:kin_bone}
-        a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right),
-    \end{gather}
-    where $a^i$ is the initial stress, $k_\text{kin}$ is the kinematic hardening modulus, $a^s_\text{kin}$ is the saturation stress, and $m^s_\text{kin}$ is the saturation rate.
-    
-    The normalised back stress $\balpha$ adopts an Armstrong--Frederick type \citep{Frederick2007} evolution rule as shown in \eqsref{eq:revised_back}.
-    \begin{gather}
-        \dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma.
-    \end{gather}
-    It must be pointed out that, strictly speaking, \eqsref{eq:kin_bone} shall be expressed as
-    \begin{gather}
-        \dot{\balpha}=b\left(\dfrac{2}{3}\dot{\bvarepsilon^p}-\balpha\dot{q}\right)=b\sqrt{\dfrac{2}{3}}\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma.
-    \end{gather}
-    With \eqsref{eq:kin_bone}, the extra constant $\sqrt{\dfrac{2}{3}}$ is combined with the constant $b$ to make it a little more compact.
-    \paragraph{Elastic Core}
-    The new field $\bd$ also adopts an Armstrong--Frederick type evolution rule as shown in \eqsref{eq:revised_core}.
-    \begin{gather}
-    \dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma.
+\end{gather}
+where $\sigma^i$ is the initial yield stress, $k_\text{iso}$ is the isotropic hardening modulus, $\sigma^s_\text{iso}$ is the saturation stress, and $m^s_\text{iso}$ is the saturation rate.
+\paragraph{Kinematic Hardening}
+The kinematic hardening bound $H$ is replaced with a discrete function $a^y$ that takes a similar form to $\sigma^y$,
+\begin{gather}\label{eq:kin_bone}
+    a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right),
+\end{gather}
+where $a^i$ is the initial stress, $k_\text{kin}$ is the kinematic hardening modulus, $a^s_\text{kin}$ is the saturation stress, and $m^s_\text{kin}$ is the saturation rate.
+
+The normalised back stress $\balpha$ adopts an Armstrong--Frederick type \citep{Frederick2007} evolution rule as shown in \eqsref{eq:revised_back}.
+\begin{gather}\label{eq:normalised_back_rule}
+    \dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma.
+\end{gather}
+It must be pointed out that, strictly speaking, \eqsref{eq:normalised_back_rule} shall be expressed as \citep[e.g.,][Eq.~(2.3.4)]{Simo1998}
+\begin{gather}
+    \dot{\balpha}=b\left(\dfrac{2}{3}\dot{\bvarepsilon^p}-\balpha\dot{q}\right)=b\sqrt{\dfrac{2}{3}}\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma.
+\end{gather}
+With \eqsref{eq:normalised_back_rule}, the extra constant $\sqrt{\dfrac{2}{3}}$ is combined with the constant $b$ to make it a little more compact.
+\paragraph{Elastic Core}
+Similarly, the new field $\bd$ also adopts an Armstrong--Frederick type evolution rule as shown in \eqsref{eq:revised_core}.
+\begin{gather}
+\dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma.
 \end{gather}
 \subsubsection{Summary}
 The key expressions for both uniaxial and 3D models are summarised in \tabref{tab:summary}.
