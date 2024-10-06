@@ -6,7 +6,7 @@ For example,
 \begin{gather}
     f=\norm{\beeta}-F,
 \end{gather}
-in which $\beeta$ is known as the shifted stress, $F=F\left(q\right)$ characterises the size of the surface and could evolve with the development of plasticity driven by some internal variable $q$.
+in which $\beeta=\beeta\left(\bsigma,\cdots\right)$ is known as the shifted stress that shall be a function of the stress $\bsigma$ and other internal variables, $F=F\left(q\right)$ characterises the size of the surface and could evolve with the development of plasticity driven by some internal variable $q$.
 Within the yield surface, the material is elastic, while plasticity would develop once the stress state reaches the yield surface.
 Thus, any admissible state shall satisfy the inequality $f\leqslant0$.
 
@@ -77,7 +77,7 @@ Both of the above evolution rules will be discussed and refined in the following
 Here, we only present them in there original form for completeness.
 \section{A Revised Formulation}
 \subsection{Preliminary Remarks}
-In the scalar form, the Armstrong--Frederick evolution rule \citep{Frederick2007} is equivalent to the following ordinary differential equation,
+In the scalar form, the Armstrong--Frederick evolution rule \citep{Frederick2007} is equivalent to the following ordinary differential equation (ODE),
 \begin{equation}
     y'=b\left(a-y\right),
 \end{equation}
@@ -85,7 +85,7 @@ it can be explicitly integrated to give the solution for the initial condition $
 \begin{equation}
     y(x)=a\left(1-\exp\left(-bx\right)\right),
 \end{equation}
-which defines a curve that asymptotically approaches the bound $a$.
+which defines a curve that asymptotically approaches the constant bound $a$.
 
 To employ a non-constant bound, it is possible to simply replace the constant $a$ by a function $f(x)$ in the ODE.
 However, as noted in the literature, the corresponding solution is not strictly bounded by $f(x)$.
@@ -141,28 +141,35 @@ The corresponding ODE can be derived as follows,
 After careful comparison, one could observe that \eqsref{eq:strict_bound} is in fact the scalar version of the evolution rule presented in \eqsref{eq:original_core}.
 They bear the same format.
 \subsubsection{Revised Evolution Rule (Elastic Core)}
-Based on the above observations, instead of defining an evolution rule for $\bc$ as shown in \eqsref{eq:original_core}, which turns out to be cumbersome when it comes to numerical implementation, one can apply the following decomposition,
+The evolution rule for $\bc$ shown in \eqsref{eq:original_core} is derived at the limit state where the subloading surface coincides with the limit surface --- which would not occur due to its asymptotic nature.
+It possesses a cumbersome form that involves both $F$ and its derivative.
+As a result, it is not straightforward to implement numerically.
+Instead, based on the above observations, one can apply the following decomposition,
 \begin{gather}\label{eq:decomposition_core}
-    \bc-\bbeta=F\bd,
+    \bc-\bbeta=F\bd\qquad\rightarrow\qquad\bc=\bbeta+F\bd,
 \end{gather}
-then the evolution of $\bc$ can be equivalently described by the evolution of $\bd$, which could take a very simple form,
+then the evolution of $\bc$ can be equivalently described by the evolution of $\bd$, which could take a very simple form as the contribution of $F$ is separated,
 \begin{gather}\label{eq:revised_core}
     \dot{\bd}=c_e\left(z_e\bn-\bd\right)\gamma.
 \end{gather}
-Since the magnitude of $\bd$ defined in this manner is bounded by the constant $z_e$, it is then guaranteed that $\norm{\bc-\bbeta}=z_e\norm{\bd}\leqslant{}z_eF$.
+Since the magnitude of $\bd$ defined in this manner is bounded by the constant $z_e$, it is then guaranteed that $\norm{\bc-\bbeta}=F\norm{\bd}\leqslant{}z_eF$.
 Such a decomposition separates the directional vector from the scalar magnitude, which allows much simpler evolution rules for both parts, although the vector here does not possess a fixed unit length.
 \eqsref{eq:decomposition_core} may be called the `pseudo-polar coordinate' representation.
 \subsubsection{Revised Evolution Rule (Back Stress)}
-Now since \eqsref{eq:decomposition_core} is adopted, it can also be applied to $\bbeta$ to allow its bound to evolve with the development of plasticity, that is,
+Now since \eqsref{eq:decomposition_core} is adopted, a similar strategy can also be applied to $\bbeta$ to allow its bound to evolve with the development of plasticity, that is,
 \begin{gather}\label{eq:decomposition_back}
     \bbeta=H\balpha,
 \end{gather}
-with $H=H\left(q\right)$ being the bound and $\balpha$ being the normalised back stress (normalised by $H$) which shall have the following evolution rule.
+with $H=H\left(q\right)$ being the bound and $\balpha$ being the normalised back stress (normalised by $H$) which could have the following evolution rule.
 \begin{gather}\label{eq:revised_back}
     \dot{\balpha}=b\left(\bn-\balpha\right)\gamma,
 \end{gather}
 where $b$ is a constant that controls the evolution rate.
-Similar to $\norm{\bc-\bbeta}$, here it is guaranteed that $\norm{\bbeta}\leqslant{}H$.
+Similar to $\norm{\bc-\bbeta}$, here it is guaranteed that $\norm{\bbeta}=H\norm{\balpha}\leqslant{}H$.
+
+It is possible to associate $H$ with $F$ such that $H$ is set to a fraction of $F$.
+Here, to allow more flexibility, $H$ is defined as an independent quantity.
+Nevertheless, if one wishes, it is possible to associate $H$ with $F$ as done in other work \citep[e.g.,]{Anjiki2019}.
 \subsubsection{Shifted Stress}
 The original formulation uses the following expression to compute the shifted stress $\beeta$,
 \begin{gather}
@@ -263,7 +270,7 @@ A graphical representation is shown in \figref{fig:loading_criterion}.
 \end{figure}
 
 In the trial state, by freezing plasticity, viz., $H$, $F$, $\balpha$ and $\bd$ are all kept constant, it can be concluded that the centre of the subloading surface must lie on the line defined by centre of the yield surface $\bbeta$ and the elastic core $\bc=\bbeta+F\bd$.
-Then for a given load increment $\Delta\bs$, there exists a scalar $r$ such that the corresponding stress state $\bs_n+r\Delta\bs$ can minimise $z$ by assuming proportional loading, we denote this $z$ as $z^\text{trial}$ since it is computed in the trial state.
+Then, for a given load increment $\Delta\bs$, assuming proportional loading, there exists a scalar $r$ such that the corresponding stress state $\bs_n+r\Delta\bs$ would minimise $z$, we denote this $z$ as $z^\text{trial}$ since it is computed in the trial state.
 In mathematical terms, it can be expressed as
 \begin{gather}
     \min\limits_{r\in\mathbb{R}}z^\text{trial}\left(r\right),
@@ -298,18 +305,18 @@ which is effectively,
 \end{gather}
 By the quadratic formula,
 \begin{gather}
-    z^\text{trial}=\dfrac{\bar{\beeta}:\bd_n+\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}}{F_n\left(1-\bd_n:\bd_n\right)}.
+    z^\text{trial}\left(r\right)=\dfrac{\bar{\beeta}:\bd_n+\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}}{F_n\left(1-\bd_n:\bd_n\right)}.
 \end{gather}
 Noting that $\norm{\bd_n}<z_e\leqslant1$, then, $1-\bd_n:\bd_n>0$, thus, the denominator is positive.
 Due to the same reason, $\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}>\abs{\bar{\beeta}:\bd_n}$.
 The other root is discarded since it may be negative.
 
-To minimise $z^\text{trial}$,
+To minimise $z^\text{trial}$, which is a univariate function of $r$ in the trial state, one could derive
 \begin{gather}
     \ddfrac{z^\text{trial}}{r}=0\quad\rightarrow\quad
     \ddfrac{}{r}\left(\bar{\beeta}:\bd_n+\sqrt{\left(\bar{\beeta}:\bd_n\right)^2+\left(\bar{\beeta}:\bar{\beeta}\right)\left(1-\bd_n:\bd_n\right)}\right)=0.
 \end{gather}
-One can derive the explicit form as follows,
+Its explicit form can be further expressed as follows,
 \begin{gather}
     \bd_n:\Delta\bs+\dfrac{\left(\bd_n:\bar{\beeta}\right)\left(\bd_n:\Delta\bs\right)+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\Delta\bs\right)}{\sqrt{\left(\bd_n:\bar{\beeta}\right)^2+\left(1-\bd_n:\bd_n\right)\left(\bar{\beeta}:\bar{\beeta}\right)}}=0,
 \end{gather}
@@ -319,7 +326,7 @@ Compared to the recent work \citep[e.g.,][]{Hashiguchi2018,Anjiki2019}, here we 
 \subsection{A von Mises Material Model}
 In the following, we present discrete expressions under the von Mises framework.
 \subsubsection{Subloading Surface}
-For the von Mises criterion, $\bs$ shall take the form $\bs=\dev{\bsigma}$, then
+For the von Mises criterion, $\bs$ shall take the deviatoric part of the stress tensor $\bs=\dev{\bsigma}$, then
 \begin{gather}
     \beeta=\dev{\bsigma}-H\balpha+\left(z-1\right)F\bd.
 \end{gather}
@@ -352,7 +359,7 @@ The evolution of $\sigma^y$ depends on $q$, here we adopt general form that comb
     \end{gather}
     where $a^i$ is the initial stress, $k_\text{kin}$ is the kinematic hardening modulus, $a^s_\text{kin}$ is the saturation stress, and $m^s_\text{kin}$ is the saturation rate.
     
-    The normalised back stress $\balpha$ adopts an Armstrong--Frederick type evolution rule as shown in \eqsref{eq:revised_back}.
+    The normalised back stress $\balpha$ adopts an Armstrong--Frederick type \citep{Frederick2007} evolution rule as shown in \eqsref{eq:revised_back}.
     \begin{gather}
         \dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma.
     \end{gather}
@@ -371,7 +378,7 @@ They can be removed if such a consistency is not required.
     \begin{tabular}{rll}
         \toprule
                            & uniaxial                                                                                                     & 3D                                                                 \\\midrule
-        Constitutive Law   & $\sigma=E\left(\varepsilon-\varepsilon^p\right)$                                                             & $\bsigma=\mb{D}\left(\bvarepsilon-\bvarepsilon^p\right)$           \\
+        Constitutive Law   & $\sigma=E\left(\varepsilon-\varepsilon^p\right)$                                                             & $\bsigma=\mb{D}_e\left(\bvarepsilon-\bvarepsilon^p\right)$           \\
         Subloading Surface & $f_s=\abs{\eta}-z\sigma^y$                                                                                   & $f_s=\norm{\beeta}-z\sqrt{\dfrac{2}{3}}\sigma^y$                   \\
                            & $\eta=\sigma-a^y\alpha+\left(z-1\right)\sigma^yd$                                                            & $\beeta=\dev{\bsigma}-a^y\balpha+\left(z-1\right)\sigma^y\bd$      \\
         Flow Rule          & $\dot{\varepsilon^p}=\gamma{}n$                                                                              & $\dot{\bvarepsilon^p}=\gamma{}\bn$                                 \\
@@ -668,7 +675,7 @@ When such a divergence occurs, sub-stepping would only make the system even more
 It means, with functions that satisfy the strong numerical continuity condition, there exists a lower bound for the step size.
 
 Now, we shall ask the following question: what kind of functions shall be used?
-From the perspective of numerical stability, it appears to be better to choose functions that satisfy the weak numerical continuity condition only.
+From the perspective of numerical robustness/stability, it appears to be better to choose functions that satisfy the weak numerical continuity condition only.
 That is,
 \begin{gather}
     \lim\limits_{z\to0^+}\dfrac{U^2}{U-zU'}=\infty\qquad\text{and}\qquad\lim\limits_{z\to0^+}\dfrac{zU^2}{U-zU'}=0.
