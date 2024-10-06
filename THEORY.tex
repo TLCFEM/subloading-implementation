@@ -284,7 +284,7 @@ In the trial state, by freezing plasticity, viz., $H$, $F$, $\balpha$ and $\bd$ 
 Then, for a given load increment $\Delta\bs$, assuming proportional loading, there exists a scalar $r$ such that the corresponding stress state $\bs_n+r\Delta\bs$ would minimise $z$, we denote this $z$ as $z^\text{trial}$ since it is computed in the trial state.
 In mathematical terms, it can be expressed as
 \begin{gather}
-    \min\limits_{r\in\mathbb{R}}z^\text{trial}\left(r\right),
+    \min\limits_{r\in\mathbb{R}}z^\text{trial}\qquad\text{s.t.}\qquad{}f_s^\text{trial}\left(z^\text{trial},r\right)=0,
 \end{gather}
 where $z^\text{trial}$ shall be computed by enforcing the corresponding $f_s^\text{trial}=0$.
 \begin{gather}\label{eq:trial_criterion}
@@ -303,8 +303,9 @@ However, there are three cases.
     \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
           Since the elastic unloading portion reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion shall use this smaller $z$, instead of $z_n$, as the starting value to correctly compute plasticity development.
     \item If $r\geqslant1$, the given load increment $\Delta\bs$ involves only elastic unloading.
-    \item If $r\leqslant0$, it is a pure (un)loading case. Nothing additional needs to be done. $z_n$ is the correct starting value for return mapping.
+    \item If $r\leqslant0$, it is a pure loading case. Nothing additional needs to be done. $z_n$ is the correct starting value for return mapping.
 \end{enumerate}
+Thus, for any given load increment, one could 1) find the corresponding scalar $r$ that minimises $z^\text{trial}$, 2) use the above criteria to determine whether plasticity occurs, if so, also correct the starting value of $z$ if necessary.
 
 Noting that $f_s^\text{trial}=0$ implies
 \begin{gather}
