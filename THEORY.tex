@@ -287,7 +287,7 @@ where $z^\text{trial}$ shall be computed by enforcing the corresponding $f_s^\te
 in which $\bar{\beeta}=\bar{\beeta}\left(r\right)=\bs_n-H_n\balpha_n-F_n\bd_n+r\Delta\bs$.
 The subscript $\left(\cdot\right)_n$ denotes the converged state at the beginning of the current loading step.
 Since no extra constraints are imposed on $r$ for the moment, a solution is guaranteed to exist.
-However, there are two cases.
+However, there are three cases.
 \begin{enumerate}
     \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
           Since the elastic unloading portion reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion shall use this smaller $z$, instead of $z_n$, as the starting value to correctly compute plasticity development.
@@ -334,12 +334,12 @@ J_r=\ddfrac{R_r}{r}=\left(\bd_n:\Delta\bs\right)\dfrac{\left(\bd_n:\bar{\beeta}\
 \end{multline}
 
 Compared to the recent work \citep[e.g.,][]{Hashiguchi2018,Anjiki2019}, here we have presented an equivalent but simpler approach to compute the starting normal yield ratio for arbitrary loading increments.
-\algoref{algo:loading_criterion} presents a general algorithm to detect partial elastic unloading and correct the starting value of the normal yield ratio if necessary.
 One shall note that it is based on the general form \eqsref{eq:trial_criterion}.
-For specific cases as can be seen later, the expressions may be different.
+For specific cases as presented later, the expressions may be different.
+\algoref{algo:loading_criterion} presents a general algorithm to detect partial elastic unloading and correct the starting value of the normal yield ratio if necessary.
 \begin{breakablealgorithm}
     \caption{correct starting value of normal yield ratio $z$}\label{algo:loading_criterion}
-    \begin{algorithmic}
+    \begin{algorithmic}[1]
         \State \textbf{Input}: $\bsigma^\text{trial}$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
         \State \textbf{Output}: $r$
         \State compute $\Delta\bs=\bs^\text{trial}-\bs_n$ using $\bsigma^\text{trial}$ and $\bsigma_n$
@@ -348,11 +348,11 @@ For specific cases as can be seen later, the expressions may be different.
         \State $\bar{\beeta}=\bar{\beeta}\left(r\right)=\bs_n-H_n\balpha_n-F_n\bd_n+r\Delta\bs$
         \State formulate $R_r$ and $J_r$\Comment{\eqsref{eq:z_residual}, \eqsref{eq:z_derivative}}
         \State $\delta{}r=R_r/J_r$
-        \If{$\norm{\delta{}r}<\text{tolerance}$}
+        \If{$\abs{\delta{}r}<\text{tolerance}$}
         \If{$0<r<1$}\Comment{current loading increment contains elastic unloading}
         \State update $z_{n}=z^\text{trial}$\Comment{compute $z^\text{trial}$ using $r$ via \eqsref{eq:z_trial}}
         \EndIf
-        \State return $r$
+        \State \textbf{return} $r$
         \EndIf
         \State $r\leftarrow{}r-\delta{}r$
         \EndWhile
@@ -548,7 +548,7 @@ It adopts a standard Newton--Raphson scheme to solve the local equilibrium.
 Noting that the local iteration does not involve complex tensor algebra, the algorithm can be implemented in a very efficient and concise manner.
 \begin{breakablealgorithm}
     \caption{state determination of the subloading surface model}\label{algo:subloading_steel}
-    \begin{algorithmic}
+    \begin{algorithmic}[1]
         \State \textbf{Parameter}: $E$, $\nu$, $\sigma^i$, $k_\text{iso}$, $\sigma^s_\text{iso}$, $m^s_\text{iso}$, $a^i$, $k_\text{kin}$, $a^s_\text{kin}$, $m^s_\text{kin}$, $b$, $u$, $c_e$, $z_e$
         \State \textbf{Input}: $\bvarepsilon_{n+1}$, $\bvarepsilon_n$, $\bsigma_n$, $\balpha_{n}$, $\bd_n$, $q_n$, $z_n$
         \State \textbf{Output}: $\mb{D}_{n+1}$, $\bsigma_{n+1}$, $\balpha_{n+1}$, $\bd_{n+1}$, $q_{n+1}$, $z_{n+1}$
@@ -559,9 +559,9 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \State $\bsigma_{n+1}=\bsigma^\text{trial}$
         \State $\mb{D}_{n+1}=\mb{D}_e$
         \State update $z$ by solving $\norm{\bs_{n+1}-a^y_{n+1}\balpha_{n+1}+\left(z-1\right)\sigma^y_{n+1}\bd_{n+1}}=\sqrt{\dfrac{2}{3}}z\sigma^y_{n+1}$\Comment{$0\leqslant{}z\leqslant1$}
-        \State return
+        \State \textbf{return}
         \EndIf
-        \State $\gamma=0$
+        \State $\gamma=0$\Comment{plastic multiplier}
         \While{true}
         \State update $q_{n+1}$ according to $\gamma$\Comment{\eqsref{eq:eqv_strain}}
         \State update $a^y_{n+1}$ and $\sigma^y_{n+1}$ according to $q_{n+1}$\Comment{\eqsref{eq:iso_bone}, \eqsref{eq:kin_bone}}
@@ -573,7 +573,7 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
         \If{$\norm{\Delta}<\text{tolerance}$}
         \State compute stress $\bsigma_{n+1}=\bsigma^\text{trial}-\gamma2G\bn_{n+1}$\Comment{$G$: shear modulus}
         \State compute consistent tangent stiffness $\mb{D}_{n+1}$\Comment{\eqsref{eq:consistent_tangent}}
-        \State return
+        \State \textbf{return}
         \EndIf
         \State $\gamma\leftarrow\gamma-\delta\gamma$
         \State $z\leftarrow{}z-\delta{}z$
