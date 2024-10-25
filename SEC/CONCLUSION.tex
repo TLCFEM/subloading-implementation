@@ -1,0 +1,23 @@
+\section{Conclusions}
+In this work, the following contributions are made.
+\begin{enumerate}
+    \item The evolution rules for back stress and elastic core are revised.
+    We ditched the idea of directly defining the back stress $\bbeta$ and the elastic core $\bc$ as independent historic variables.
+    Instead, we adopt the `peudo-polar coordinate' decomposition as shown in \eqsref{eq:decomposition_back} and \eqref{eq:decomposition_core}.
+    As a result, the proposed rules are equivalent to the original proposal while remain in simple forms that are easy to understand and implement.
+    \item A simpler, universal loading/unloading condition with an algebraic interpretation is proposed.
+    The procedure does not involve complex criteria and is cheap to evaluate.
+    \item The specific form of evolution function $U\left(z\right)$ is further discussed.
+          For numerical robustness and stability, functions that do not meet the `strong' numerical continuity condition are recommended.
+    \item A reference efficient implementation is presented.
+    Compared to previous implementations, the proposed implementation is more compact and efficient.
+    The consistent tangent stiffness can also be explicitly evaluated.
+\end{enumerate}
+To summarise, the proposed formulation offers a functionally equivalent but more concise and compact alternative to the original extended subloading surface model.
+This allows for a more straightforward and efficient numerical implementation without compromising accuracy and robustness.
+
+Due to the length limitation, some additional `add-on' features, including cyclic isotropic hardening stagnation and tangential component, are not discussed in this work.
+However, extending the proposed model to include these features is straightforward.
+
+Both the uniaxial and 3D version of the proposed subloading surface model suitable for metals have been implemented in \texttt{suanPan} \citep{Chang2024}.
+All numerical models and the relevant scripts are available in this repository\footnote{https://github.com/TLCFEM/subloading-implementation}.
