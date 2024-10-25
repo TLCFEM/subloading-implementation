@@ -35,7 +35,9 @@ This is achieved by the following evolution rule for $\bc$ \citep{Anjiki2019,Has
 \begin{gather}\label{eq:original_core}
     \dot{\bc}=c_e\gamma\left(z_eF\bn-\left(\bc-\bbeta\right)\right)+\dot{\bbeta}+\dfrac{\dot{F}}{F}\left(\bc-\bbeta\right).
 \end{gather}
-In which, $0\leqslant{}c_e$ is a constant that controls the evolution rate, $0\leqslant{}z_e\leqslant1$ is a constant that controls the limit size of the elastic core, $\gamma$ is the plastic multiplier and $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}$ is unit gradient of the subloading surface.
+In which, $0\leqslant{}c_e$ is a constant that controls the evolution rate, $0\leqslant{}z_e\leqslant1$ is a constant that controls the limit size of the elastic core, $\gamma$ is the plastic multiplier and $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}=\dfrac{\beeta}{\norm{\beeta}}$ is unit gradient of the subloading surface.
+It shall be pointed out that the term $z_eF\bn$ is expressed as $z_e\dfrac{\beeta}{z}$ in the original formulation.
+They are identical due to the fact that $\norm{\beeta}=zF$ since $f_s\equiv0$ while $F\bn$ has clear numerical advantages over $\dfrac{\beeta}{z}$.
 
 The evolution rule for the normal yield ratio $z$ is given by
 \begin{gather}\label{eq:original_z}
@@ -132,7 +134,7 @@ Similar to $\norm{\bc-\bbeta}$, here it is guaranteed that $\norm{\bbeta}=H\norm
 It is possible to associate $H$ with $F$ such that $H$ is set to a fraction of $F$.
 Here, to allow more flexibility, $H$ is defined as an independent quantity.
 Nevertheless, if one wishes, it is possible to associate $H$ with $F$ as done in other work \citep[e.g.,][]{Anjiki2019}.
-However, one shall note that the specific form $\bbeta=b\left(\bn-\dfrac{\bbeta}{H}\right)\gamma$ shall not be used for the same reason as discussed previously, see \figref{fig:examples}.
+However, one shall note that the specific form $\bbeta=b\left(\bn-\dfrac{\bbeta}{H}\right)\gamma$, which is used by \citet{Anjiki2019,Anjiki2021}, shall not be used as the back stress may go beyond the bound ($\norm{\bbeta}>H$) for softening materials, see the discussion around \figref{fig:examples}.
 \subsubsection{Shifted Stress}
 Since now the new centre of the subloading surface is shifted to $\bbeta+\left(1-z\right)\left(\bc-\bbeta\right)$, the original formulation uses the following expression to compute the shifted stress $\beeta$,
 \begin{gather}
