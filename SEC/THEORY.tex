@@ -103,6 +103,20 @@ On the other hand, the corresponding ODE can be derived as follows,
 After careful comparison, one could observe that \eqsref{eq:strict_bound} is in fact the scalar unidirectional version of the evolution rule presented in \eqsref{eq:original_core}.
 They bear the same format.
 Thus, one can conclude that \eqsref{eq:strict_bound_core} is mathematically equivalent to \eqsref{eq:strict_bound} as it is the solution to the latter with the initial condition $y(0)=0$, however, the latter is much more cumbersome.
+
+On the other hand, consider the function
+\begin{gather}\label{eq:polar_decomposition}
+    \bc-\bbeta=F\bd,
+\end{gather}
+in which $\bd$ is some quantity, its derivative can be expressed as
+\begin{gather}
+    \dot{\bc}-\dot{\bbeta}=F\dot{\bd}+\dot{F}\bd=F\dot{\bd}+\dfrac{\dot{F}}{F}\left(\bc-\bbeta\right).
+\end{gather}
+By comparing with \eqsref{eq:original_core}, one could conclude that \eqsref{eq:polar_decomposition} must be mathematically equivalent to \eqsref{eq:original_core} if $\bd$ is defined in a manner such that
+\begin{gather}
+    \dot{\bd}=c_e\gamma\left(z_e\bn-\bd\right).
+\end{gather}
+This is effectively an Armstrong--Frederick type evolution rule.
 \subsubsection{Revised Evolution Rule (Elastic Core)}
 The evolution rule for $\bc$ shown in \eqsref{eq:original_core} is derived at the limit state where the subloading surface coincides with the limit surface --- which would not occur due to its asymptotic nature.
 It possesses a cumbersome form that involves both $F$ and its derivative.
