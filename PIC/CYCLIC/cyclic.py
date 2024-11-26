@@ -9,6 +9,8 @@ plt.rcParams.update({"font.size": 6})
 def F(q):
     return 232 + 70 * (1 - np.exp(-q * 30))
 
+def H(q):
+    return 209 + 63 * (1 - np.exp(-q * 30))
 
 def new_fig():
     fig = plt.figure(figsize=(6, 2.5), tight_layout=True)
@@ -39,7 +41,7 @@ def plot():
     )
     ax.plot(
         strain[:, 1] * 1e3,
-        hist[:, 5] * F(hist[:, 2]),
+        hist[:, 6] * F(hist[:, 2]),
         color="#4575b4",
         marker="+",
         markevery=151,
@@ -62,7 +64,7 @@ def plot():
     ax.set_ybound(0, 1.1)
 
     ax = ax.twinx()
-    ax.plot(strain[:, 1] * 1e3, hist[:, 5], color="#4575b4", marker="+", markevery=151)
+    ax.plot(strain[:, 1] * 1e3, hist[:, 6], color="#4575b4", marker="+", markevery=151)
     ax.legend(["$d$"], loc="upper right")
     ax.set_ylabel("similarity vector $d$")
     ax.set_xbound(0, max(strain[:, 1] * 1e3))
@@ -80,7 +82,7 @@ def plot():
     ax.set_ybound(0, 1.1)
 
     ax = ax.twinx()
-    ax.plot(hist[:, 2] * 1e3, hist[:, 5], color="#4575b4", marker="+", markevery=151)
+    ax.plot(hist[:, 2] * 1e3, hist[:, 6], color="#4575b4", marker="+", markevery=151)
     ax.legend(["$d$"], loc="upper right")
     ax.set_ylabel("similarity vector $d$")
     ax.set_xbound(0, max(hist[:, 2] * 1e3))
