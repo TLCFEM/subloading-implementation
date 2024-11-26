@@ -3,7 +3,7 @@ In this work, the following contributions are made.
 \begin{enumerate}
     \item The evolution rules for back stress and elastic core are revised.
     We ditched the idea of directly defining the back stress $\bbeta$ and the elastic core $\bc$ as independent historic variables.
-    Instead, we adopt the `peudo-polar coordinate' decomposition as shown in \eqref{eq:decomposition_core} and \eqsref{eq:decomposition_back}.
+    Instead, we adopt the `pseudo-polar coordinate' decomposition as shown in \eqsref{eq:decomposition_core} and \eqsref{eq:decomposition_back}.
     As a result, the proposed rules are equivalent to the original proposal while remain in simple forms that are easy to understand and implement.
     \item A simpler, universal loading/unloading condition with an algebraic interpretation is proposed.
     The procedure does not involve complex criteria and is cheap to evaluate.
@@ -18,6 +18,9 @@ This allows for a more straightforward and efficient numerical implementation wi
 
 Due to the length limitation, some additional `add-on' features, including, for example, the elastic threshold of the normal yield ratio $z$, cyclic isotropic hardening stagnation and tangential component, are not discussed in this work.
 However, extending the proposed model to include these features is straightforward.
+Furthermore, the proposed formulation follows the von Mises framework, thus it is suitable for metals.
+It needs to be adapted for other materials.
+However, the decomposition \eqsref{eq:decomposition_core} is universal and applicable to various models.
 
 Both the uniaxial and 3D version of the proposed subloading surface model suitable for metals have been implemented in \texttt{suanPan} \citep{Chang2024}.
 All numerical models and the relevant scripts are available in this repository\footnote{https://github.com/TLCFEM/subloading-implementation}.
