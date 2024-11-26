@@ -271,19 +271,19 @@ They can be removed if such a consistency is not required.
     \caption{Summary of the subloading surface model}\label{tab:summary}
     \begin{tabular}{rlll}
         \toprule
-                           & uniaxial                                                                                                     & 3D                                                               &  \\\midrule
-                           Constitutive Law   & $\sigma=E\left(\varepsilon-\varepsilon^p\right)$                                                             & $\bsigma=\mb{D}_e:\left(\bvarepsilon-\bvarepsilon^p\right)$       &    \\
-                           Subloading Surface & $f_s=\abs{\eta}-z\sigma^y$                                                                                   & $f_s=\norm{\beeta}-z\sqrt{\dfrac{2}{3}}\sigma^y$                  & \\
-                           & $\eta=\sigma-a^y\alpha+\left(z-1\right)\sigma^yd$                                                            & $\beeta=\dev{\bsigma}-a^y\balpha+\left(z-1\right)\sigma^y\bd$     & \faLightbulb \\
-                           Flow Rule          & $\dot{\varepsilon^p}=\gamma{}n$                                                                              & $\dot{\bvarepsilon^p}=\gamma{}\bn$                                & \\
-                           & $n=\sign{\eta}$                                                                                              & $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}$          & \\
-                           Evolution Rules     & $\dot{q}=\gamma$                                                                                             & $\dot{q}=\sqrt{\dfrac{2}{3}}\gamma$                               & \\
-                           & $\dot{\alpha}=\sqrt{\dfrac{2}{3}}b\left(n-\alpha\right)\gamma$                                               & $\dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma$&\faLightbulb \\
-                           & $\dot{d}=\sqrt{\dfrac{2}{3}}c_e\left(z_en-d\right)\gamma$                                                    & $\dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma$   & \faLightbulb\\
-                           & \multicolumn{2}{l}{$\dot{z}=U\dot{q}$}                                                                                                                                           & \\
-                           & \multicolumn{2}{l}{$\sigma^y=\sigma^i+k_\text{iso}q+\sigma^s_\text{iso}\left(1-e^{-m^s_\text{iso}q}\right)$}                                                                     & \\
-                           & \multicolumn{2}{l}{$a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right)$}                                                                                    & \\\midrule
-                           \multicolumn{4}{l}{Items labelled by \faLightbulb{} are novel proposals compared to the existing formulation \citep{Hashiguchi2024}.}\\\bottomrule
+                           & uniaxial                                                       & 3D                                                                 &              \\ \midrule
+          Constitutive Law & $\sigma=E\left(\varepsilon-\varepsilon^p\right)$               & $\bsigma=\mb{D}_e:\left(\bvarepsilon-\bvarepsilon^p\right)$        &              \\
+        Subloading Surface & $f_s=\abs{\eta}-z\sigma^y$                                     & $f_s=\norm{\beeta}-z\sqrt{\dfrac{2}{3}}\sigma^y$                   &              \\
+                           & $\eta=\sigma-a^y\alpha+\left(z-1\right)\sigma^yd$              & $\beeta=\dev{\bsigma}-a^y\balpha+\left(z-1\right)\sigma^y\bd$      & \faLightbulb \\
+                 Flow Rule & $\dot{\varepsilon^p}=\gamma{}n$                                & $\dot{\bvarepsilon^p}=\gamma{}\bn$                                 &              \\
+                           & $n=\sign{\eta}$                                                & $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}$           &              \\
+           Evolution Rules & $\dot{q}=\gamma$                                               & $\dot{q}=\sqrt{\dfrac{2}{3}}\gamma$                                &              \\
+                           & $\dot{\alpha}=\sqrt{\dfrac{2}{3}}b\left(n-\alpha\right)\gamma$ & $\dot{\balpha}=b\left(\sqrt{\dfrac{2}{3}}\bn-\balpha\right)\gamma$ & \faLightbulb \\
+                           & $\dot{d}=\sqrt{\dfrac{2}{3}}c_e\left(z_en-d\right)\gamma$      & $\dot{\bd}=c_e\left(\sqrt{\dfrac{2}{3}}z_e\bn-\bd\right)\gamma$    & \faLightbulb \\
+                           & \multicolumn{2}{l}{$\dot{z}=U\dot{q}$}                                                                                              &              \\
+                           & \multicolumn{2}{l}{$\sigma^y=\sigma^i+k_\text{iso}q+\sigma^s_\text{iso}\left(1-e^{-m^s_\text{iso}q}\right)$}                        &              \\
+                           & \multicolumn{2}{l}{$a^y=a^i+k_\text{kin}q+a^s_\text{kin}\left(1-e^{-m^s_\text{kin}q}\right)$}                                       &              \\ \midrule
+        \multicolumn{4}{l}{Items labelled by \faLightbulb{} are novel proposals compared to the existing formulation \citep{Hashiguchi2024}.}                                   \\ \bottomrule
     \end{tabular}
 \end{table}
 
