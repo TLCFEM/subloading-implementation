@@ -3,7 +3,7 @@ The conventional plasticity theory adopts the concept of yield/loading surface \
 The surface encloses a region where the material is elastic, and once the stress state reaches the surface, plastic deformation occurs.
 Because of this clear distinction between elastic and plastic states, the corresponding stiffness is often discontinuous when transiting from elastic to plastic states.
 Although such a discontinuity is not physically sound, this is often not a concern for most models as the capability of capturing more accurate cyclic responses (and/or other objectives) is often more important, especially for metals.
-To this end, models employ advanced/modified kinematic hardening rules enriched with various types of rate control and hardening activation/deactivation, such as Ohno's modifications \citep[see, e.g.,][]{Ohno1982,Ohno1993,Ohno2021} and Yoshida's modification \citep{Yoshida2002}, based on the famous Armstrong--Frederick rule \citep{Frederick2007} and its multiplicative version, see a comprehensive review by \citet{Chaboche2008}. have been proposed.
+To this end, models employ advanced/modified kinematic hardening rules enriched with various types of rate control and hardening activation/deactivation, such as Ohno's modifications \citep[see, e.g.,][]{Ohno1982,Ohno1993,Ohno2021} and Yoshida's modification \citep{Yoshida2002}, based on the famous Armstrong--Frederick rule \citep{Frederick2007} and its multiplicative version, see a comprehensive review by \citet{Chaboche2008}, have been proposed.
 However, models of this kind often present decent cyclic responses under two--sided cyclic loading but are \emph{`incapable of describing the \textnormal{(general, including one--sided and small cycles)} cyclic loading behaviour'} \citep[][pg. 282]{Hashiguchi2023} due to the existence of the elastic region, regardless of large or small \citep{Dafalias1977}.
 
 On the contrary, the subloading surface model offers a quite unique approach that is different from the conventional framework.
@@ -19,14 +19,14 @@ The most notable one is that it provides a smooth transition between elastic and
 Such a continuity is more realistic and tends to be beneficial not only for static analyses, but also for other applications such as damping formulation, for example, a stiffness proportional damping based on the tangent stiffness matrix would now result in a continuous damping matrix, thus, a continuous damping force.
 Furthermore, due to the introduction of the elastic core in the extended version, it is much more capable of describing ratcheting behaviour under cyclic loading, which cannot be well captured by conventional models that incorporate a pure elastic region.
 
-The choice of internal history variables in the original formulation bears a clear and straightforward physical implication.
-However, their evolution rules appear to be somewhat cumbersome and not very intuitive.
-The corresponding numerical implementation \citep[see, e.g.,][]{Fincato2017,Anjiki2019,Anjiki2021} is also less efficient and robust.
-
+The choice of internal history variables in the existing formulation bears a clear and straightforward physical implication.
+However, their evolution rules \citep[see, e.g.,][]{Hashiguchi2024} appear to be somewhat cumbersome and not very intuitive.
+Due to the same reason, the corresponding numerical implementation \citep[see, e.g.,][]{Fincato2017,Anjiki2019,Anjiki2021} involves a local system possessing a significant size (around \num{20} for 3D models).
+Thus, it appears to be less efficient and robust.
 In this work, we focus on the following three tasks:
 \begin{enumerate}
-    \item revise the definition and the corresponding evolution rule of internal history variables to make them concise and intuitive both analytically and numerically;
-    \item propose a concise and universal loading/unloading criterion;
+    \item revise the definition(s) and the corresponding evolution rule(s) of some key internal history variables to make them concise and intuitive both analytically and numerically;
+    \item propose a concise and universal loading/unloading criterion that is cheap to evaluate and can be easily implemented;
     \item improve numerical stability by discussing and choosing more numerical friendly functions for the evolution rules.
 \end{enumerate}
 As a showcase, a reference algorithm is also presented which adopts the von Mises framework that is suitable for metals.
@@ -34,5 +34,5 @@ As a showcase, a reference algorithm is also presented which adopts the von Mise
 The paper is organized as follows.
 The original formulation of the (extended) subloading surface model is briefly reviewed in \secref{sec:subloading}.
 Based on which, a revised formulation with improved evolution rules and loading/unloading criterion is proposed in \secref{sec:revised}.
-A reference implementation for von Mises materials is presented in the same section.
+A reference implementation for von Mises materials is presented thereafter.
 Numerical analyses cover the comparison between the conventional and the proposed (un)loading criterion and the accuracy analysis of the proposed algorithm.
