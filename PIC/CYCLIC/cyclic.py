@@ -1,3 +1,4 @@
+from math import sqrt
 import os
 import subprocess
 import numpy as np
@@ -82,8 +83,17 @@ def plot():
     ax.set_ybound(0, 1.1)
 
     ax = ax.twinx()
+    ax.plot(
+        hist[:, 2] * 1e3,
+        0.7 - 0.7 * np.exp(-143 * sqrt(1.5) * hist[:, 2]),
+        color="#4575b4",
+        marker="+",
+        markevery=347,
+        linestyle="dashed",
+        linewidth=1,
+    )
     ax.plot(hist[:, 2] * 1e3, hist[:, 6], color="#4575b4", marker="+", markevery=151)
-    ax.legend(["$d$"], loc="upper right")
+    ax.legend(["monotonic bound $d$", "$d$"], loc="upper right")
     ax.set_ylabel("similarity vector $d$")
     ax.set_xbound(0, max(hist[:, 2] * 1e3))
     ax.set_ybound(0, 1.1)
