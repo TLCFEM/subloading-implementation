@@ -80,7 +80,7 @@ The rest of the regions appear to have a relatively good accuracy according to t
 % This is mainly caused by the fact that the numerical integration of $z$ is less accurate around $z=0$, especially when the step size is large, as the adopted rate function $U\left(z\right)$ is not bounded and approaches infinity as $z$ approaches zero.
 % However, even using a more accurate numerical method, such as the trapezoidal rule, the corresponding numerical performance would not be significantly improved.
 
-In fact, using the indicator adopted by \citet{Anjiki2019}, which is effectively the absolute error, one could see that the large relative error is mainly caused by the small reference stress $\bsigma_\text{ref}$.
+In fact, using the indicator adopted by \citet{Anjiki2019}, which is effectively the absolute error, one may see that the large relative error is mainly caused by the small reference stress $\bsigma_\text{ref}$.
 \figref{fig:abs_error} further show the absolute error map in region B for the two cases considered.
 \begin{figure}[htb]
     \centering
@@ -94,7 +94,7 @@ In fact, using the indicator adopted by \citet{Anjiki2019}, which is effectively
     \end{subfigure}
     \caption{absolute error map in region B}\label{fig:abs_error}
 \end{figure}
-It could be observed that there is no significant difference between outwards and inwards directions, indicating that the proposed unloading criterion possesses a similar accuracy to that of returning mapping towards loading directions.
+It can be observed that there is no significant difference between outwards and inwards directions, indicating that the proposed unloading criterion possesses a similar accuracy to that of returning mapping towards loading directions.
 The overall error is below \SIrange{5}{6}{\percent} of $\sigma^i$ in most regions.
 \subsection{Cyclic Response}
 The reference comparison can be seen in the work by \citet{Hassan2008,Hashiguchi2017a}.
@@ -114,6 +114,7 @@ The rest of the parameters are set to zero.
 
 \figref{fig:cyclic_total} depicts the cyclic response.
 Due to the presence of the elastic core, the evolution $d$ allows plastic strain to accumulate even when the material undergoes `elastic unloading' (in the conventional sense).
+Adjusting the evolution rate of $d$ allows one to control the rate of plastic strain accumulation under cyclic loading, thus, fine tuning the ratcheting behaviour.
 The history of the back stress $\bbeta$ is not shown as it is insignificant with the parameters used.
 \begin{figure}[htb]
 \centering

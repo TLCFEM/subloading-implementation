@@ -5,8 +5,10 @@ Because of this clear distinction between elastic and plastic states, the corres
 Although such a discontinuity is not physically sound, this is often not a concern for most models as the capability of capturing more accurate cyclic responses (and/or other objectives) is often more important, especially for metals.
 To this end, models employ advanced/modified kinematic hardening rules enriched with various types of rate control and hardening activation/deactivation, such as Ohno's modifications \citep[see, e.g.,][]{Ohno1982,Ohno1993,Ohno2021} and Yoshida's modification \citep{Yoshida2002}, based on the famous Armstrong--Frederick rule \citep{Frederick2007} and its multiplicative version, see a comprehensive review by \citet{Chaboche2008}, have been proposed.
 However, models of this kind often present decent cyclic responses under two--sided cyclic loading but are \emph{`incapable of describing the \textnormal{(general, including one--sided and small cycles)} cyclic loading behaviour'} \citep[][pg. 282]{Hashiguchi2023} due to the existence of the elastic region, regardless of large or small \citep{Dafalias1977}.
+As an alternative to the conventional macroscopic approach, the polycrystalline models \citep[see, e.g.,][]{Beyerlein2018} employ a microscopic approach to describe the plastic deformation, which is able to capture the cyclic behaviour more accurately.
+However, the corresponding computational cost is high as often fine microstructural details are required.
 
-On the contrary, the subloading surface model offers a quite unique approach that is different from the conventional framework.
+Within the same macroscopic framework, on the contrary, the subloading surface model offers a quite unique approach that is different from the conventional framework.
 The initial proposal of the subloading surface model can be dated back to the work by \citet{Hashiguchi1980}.
 The model is later extended \citep{Hashiguchi1989} to include an elastic core, which enables the model to describe more versatile cyclic responses.
 Over the decades of development, it has been widely adopted in various applications, to name a few recent endeavours, see the work by \citet{Maranha2016,Xiong2018,Anjiki2021,Yamakawa2021,Yamakawa2022,Lu2023}.
