@@ -35,7 +35,7 @@ This is achieved by the following evolution rule for $\bc$ \citep{Anjiki2019,Has
 \begin{gather}\label{eq:original_core}
     \dot{\bc}=c_e\norm{\dot{\bvarepsilon^p}}\left(z_eF\bn-\left(\bc-\bbeta\right)\right)+\dot{\bbeta}+\dfrac{\dot{F}}{F}\left(\bc-\bbeta\right).
 \end{gather}
-In which, $0\leqslant{}c_e$ is a constant that controls the evolution rate, $0\leqslant{}z_e\leqslant1$ is a constant that controls the limit size of the elastic core and $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}=\dfrac{\beeta}{\norm{\beeta}}$ is unit gradient of the subloading surface.
+In which, $0\leqslant{}c_e$ is a constant that controls the evolution rate, $0\leqslant{}z_e\leqslant1$ is a constant that controls the limit size of the elastic core and $\bn=\pdfrac{f_s}{\bsigma}/\norm{\pdfrac{f_s}{\bsigma}}=\dfrac{\beeta}{\norm{\beeta}}$ is the unit gradient of the subloading surface.
 It shall be pointed out that the term $z_eF\bn$ is expressed as $z_e\dfrac{\beeta}{z}$ in the original formulation.
 They are identical due to the fact that $\norm{\beeta}=zF$ since $f_s\equiv0$ while $F\bn$ has clear numerical advantages over $\dfrac{\beeta}{z}$.
 
@@ -87,7 +87,7 @@ It is worth noting that the following form
     y'=b\left(1-\dfrac{1}{a\left(x\right)}y\right)=\dfrac{b}{a\left(x\right)}\left(a\left(x\right)-y\right)
 \end{gather}
 has a similar solution to that of $y'=b\left(a\left(x\right)-y\right)$.
-The $y'$ is governed by the difference $a\left(x\right)-y$, while the approaching rate changes from $b$ to $b/a\left(x\right)$.
+The term $y'$ is governed by the difference $a\left(x\right)-y$, while the approaching rate changes from $b$ to $b/a\left(x\right)$.
 They are equivalent in terms of the asymptotic behaviour and share the same shortcoming.
 This form has been used in defining the evolution rule for the back stress in the subloading surface model \citep[see, e.g.,][]{Anjiki2019,Hashiguchi2023,Hashiguchi2024}.
 
@@ -536,7 +536,7 @@ Noting that the local iteration does not involve complex tensor algebra, the alg
     \end{algorithmic}
 \end{breakablealgorithm}
 \subsubsection{Remarks}
-Compared to the previous implementation \citep{Fincato2017,Anjiki2019}, the formulation proposed in this work dramatically reduces the size of the local system from \num{20} to \num{2}.
+Compared to the previous implementation \citep{Fincato2017,Anjiki2019}, the formulation proposed in this work drastically reduces the size of the local system from \num{20} to \num{2}.
 We also present the explicit expression of the consistent tangent operator, which is not available in the previous works.
 If \eqsref{eq:original_z} can be explicitly integrated by choosing a specific function $U$ (such as the cotangent function used in the original proposal), the local system can be further reduced to a scalar residual.
 \subsection{Selection of $U\left(z\right)$}
