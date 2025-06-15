@@ -18,7 +18,7 @@ young_modulus = 2e5
 def generate_main():
     with open("isomap.sp", "w") as f:
         f.write(f"""
-material SubloadingMetal 1 {young_modulus} 0.2 \
+material Subloading 1 {young_modulus} 0.2 \
 {yield_stress} 2E3 0 0 \
 0 0 0 0 \
 5E2 0 0 0
