@@ -205,7 +205,7 @@ However, there are three distinctive cases.
     \item If $0<r<1$, the given load increment $\Delta\bs$ contains both elastic unloading and plastic loading.
           Since the elastic unloading portion ($0\to{}r$) reduces $z$ to a value smaller than the converged $z_n$, the plastic loading portion ($r\to{}1$) shall use this minimum $z$ (smaller than $z_n$, not necessarily zero in 3D models), instead of $z_n$, as the starting value to correctly compute plasticity development.
     \item If $r\geqslant1$, the given load increment $\Delta\bs$ involves only elastic unloading.
-    \item If $r\geqslant0$, it is a pure loading case. Nothing additional needs to be done. $z_n$ is the correct starting value for return mapping.
+    \item If $r\leqslant0$, it is a pure loading case. Nothing additional needs to be done. $z_n$ is the correct starting value for return mapping.
 \end{enumerate}
 Thus, for any given load increment, one can 1) find the corresponding scalar $r$ that minimises $z^\text{trial}$, 2) use the above criteria to determine whether plasticity occurs, if so, also correct the starting value of $z$ if necessary.
 We defer the presentation of explicit expressions for the above procedure after introducing the von Mises framework.
