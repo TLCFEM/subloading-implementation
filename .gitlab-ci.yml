@@ -1,0 +1,10 @@
+image: texlive/texlive:latest
+stages:
+  - build
+build_pdf:
+  stage: build
+  script:
+    - mkdir tmp && latexmk -pdf PICCOLLECTION.tex && latexmk -pdf SUBLOADING.tex
+  artifacts:
+    paths:
+      - SUBLOADING.pdf
